@@ -14,22 +14,23 @@
 #include "vgui/VGUI.h"
 #include "mathlib/vector.h"
 #include "ivrenderview.h"
+#include "globalvars_base.h"
 
 // Base interface for GameUI2 (ReGameUI)
 class IGameUI2 : public IBaseInterface {
 public:
-    virtual void Initialize( CreateInterfaceFn appSystemFactory ) = 0;
-    virtual void Shutdown() = 0;
-    virtual void VidInit() = 0;
+    virtual void Initialize( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGlobals ) = 0;
+    virtual void Shutdown( void ) = 0;
+    virtual void VidInit( void ) = 0;
 
-    virtual void PostInit() = 0;
-    virtual void PreShutdown() = 0;
-    virtual void OnUpdate() = 0;
+    virtual void PostInit( void ) = 0;
+    virtual void PreShutdown( void ) = 0;
+    virtual void OnUpdate( void ) = 0;
     virtual void LevelInitPreEntity( const char *pMapName ) = 0;
-    virtual void LevelInitPostEntity() = 0;
-    virtual void LevelShutdown() = 0;
+    virtual void LevelInitPostEntity( void ) = 0;
+    virtual void LevelShutdown( void ) = 0;
 };
-#define GAMEUI2_INTERFACE_VERSION   "GameUI2v001"
+#define GAMEUI2_INTERFACE_VERSION   "GameUI2_002"
 
 // Some macros...
 #define GameUI2_Message(fmt, ...)   ConColorMsg( Color(0x00, 0xFF, 0xFF, 0xFF), fmt, __VA_ARGS__ )

@@ -51,39 +51,26 @@ $Project "gameui2_dll"
     {
         $File   "$SRCDIR\public\vgui_controls\vgui_controls.cpp"
         $File   "$SRCDIR\common\language.cpp"
-
-        $File   "$SRCDIR\gameui2\gameui2_api.cpp"
-        $File   "$SRCDIR\gameui2\gameui2_api.h"
-        $File   "$SRCDIR\gameui2\gameui2_interface.cpp"  
-        $File   "$SRCDIR\gameui2\gameui2_interface.h"
-        $File   "$SRCDIR\gameui2\gameui2_rootpanel.cpp"
-        $File   "$SRCDIR\gameui2\gameui2_rootpanel.h"
-
-        $Folder "Elements"
-        {
-            $File   "$SRCDIR\gameui2\elements\logo.cpp"
-            $File   "$SRCDIR\gameui2\elements\menu.cpp"
-            // TODO: ...
-        }
-    }
-    
-    $Folder "Header Files"
-    {
-        $File   "$SRCDIR\common\GameUI\IGameUI2.h"
-        $File   "$SRCDIR\gameui2\engineinterface.h"
+        
+        $File   "$SRCDIR\gameui2\basepanel.cpp"
+        $File   "$SRCDIR\gameui2\basepanel.h"
+        $File   "$SRCDIR\gameui2\gamelogo.cpp"
+        $File   "$SRCDIR\gameui2\gamemenu.cpp"
+        $File   "$SRCDIR\gameui2\gameui2_int.cpp"
+        $File   "$SRCDIR\gameui2\gameui2_int.h"
     }
     
     $Folder "Link Libraries"
     {
-        $Lib            "bitmap"
-        $Lib            "choreoobjects"
-        $Lib            "mathlib"
-        $Lib            "matsys_controls"
-        $Lib            "tier1"
-        $Lib            "tier2"
-        $Lib            "tier3"
-        $Lib            "vgui_controls"
-        $Lib            "vtf"
-        $ImpLib         "steam_api"
+        $Lib    "bitmap"
+        $Lib    "choreoobjects"
+        $Lib    "mathlib"
+        $Lib    "matsys_controls"
+        $Lib    "tier1"
+        $Lib    "tier2"
+        $Lib    "tier3"
+        $Lib    "vgui_controls"
+        $Lib    "vtf"
+        $ImpLib "steam_api"
     }
 }

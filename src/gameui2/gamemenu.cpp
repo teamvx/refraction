@@ -1,6 +1,9 @@
-#include "gameui2_api.h"
+#include "gameui2_int.h"
 #include "tier0/icommandline.h"
 #include "tier1/KeyValues.h"
+#include "vgui/ISurface.h"
+#include "filesystem.h"
+#include "cdll_int.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -12,7 +15,7 @@ public:
     void Initialize();
     void Paint();
     void PaintBackground();
-    
+
     void OnCursorEntered();
     void OnMousePressed( vgui::MouseCode code );
 
@@ -74,7 +77,7 @@ void CGameMenuButton::Paint()
         fgColor[2] = 255 - fgColor[2];  // b
         fgColor[3] = 255;               // a
     }
-    
+
     g_pVGuiSurface->DrawSetTextColor( fgColor );
     g_pVGuiSurface->DrawSetTextFont( m_hFont );
     g_pVGuiSurface->DrawSetTextPos( m_iTextX, m_iTextY );
@@ -103,7 +106,7 @@ void CGameMenuButton::OnMousePressed( vgui::MouseCode code )
     BaseClass::OnMousePressed( code );
     if( code == vgui::MouseCode::MOUSE_FIRST ) {
         g_pVGuiSurface->PlaySound( m_szClickSound );
-        g_GameUI2.m_pGameUI1->SendMainMenuCommand( m_szCommand );
+        g_pGameUI1->SendMainMenuCommand( m_szCommand );
     }
 }
 
@@ -172,21 +175,21 @@ void CGameMenu::Initialize()
     vgui::IScheme *pScheme = g_pVGuiSchemeManager->GetIScheme( GetScheme() );
     Clear();
 
-    int iXpos           = Q_atoi( pScheme->GetResourceString( "GameMenu.X" ) );
-    int iYpos           = Q_atoi( pScheme->GetResourceString( "GameMenu.Y" ) );
-    int iButtonHeight   = Q_atoi( pScheme->GetResourceString( "GameMenu.Button.Height" ) );
-    int iWidth          = Q_atoi( pScheme->GetResourceString( "GameMenu.Width" ) );
-    int iHeight         = 0;
+    int iXpos = Q_atoi( pScheme->GetResourceString( "GameMenu.X" ) );
+    int iYpos = Q_atoi( pScheme->GetResourceString( "GameMenu.Y" ) );
+    int iButtonHeight = Q_atoi( pScheme->GetResourceString( "GameMenu.Button.Height" ) );
+    int iWidth = Q_atoi( pScheme->GetResourceString( "GameMenu.Width" ) );
+    int iHeight = 0;
     SetPropPos( iXpos, iYpos );
 
     KeyValues *pLayoutKV = new KeyValues( "GameMenu" );
     pLayoutKV->LoadFromFile( g_pFileSystem, "resource/menulayout.res", "GAME" );
     for( KeyValues *pSub = pLayoutKV->GetFirstSubKey(); pSub; pSub = pSub->GetNextTrueSubKey() ) {
-        const char *pszButtonName       = pSub->GetName();
-        const char *pszButtonCommand    = pSub->GetString( "command", "" );
-        bool bIsBlank                   = pSub->GetBool( "blank", false );
-        bool bShowInGame                = pSub->GetBool( "in_game", true );
-        bool bShowInMenu                = pSub->GetBool( "in_menu", true );
+        const char *pszButtonName = pSub->GetName();
+        const char *pszButtonCommand = pSub->GetString( "command", "" );
+        bool bIsBlank = pSub->GetBool( "blank", false );
+        bool bShowInGame = pSub->GetBool( "in_game", true );
+        bool bShowInMenu = pSub->GetBool( "in_menu", true );
 
         // in_game is 0, so skip -- we are in game
         if( m_bWasInGame && !bShowInGame ) {
