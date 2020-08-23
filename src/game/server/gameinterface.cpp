@@ -31,8 +31,7 @@
 #include "func_areaportalwindow.h"
 #include "igamesystem.h"
 #include "init_factory.h"
-//#include "vstdlib/random.h"   <-- fuck you
-#include "ustdlib_random.h"
+#include "mt19937_random.h"
 #include "env_wind_shared.h"
 #include "engine/IEngineSound.h"
 #include "ispatialpartition.h"

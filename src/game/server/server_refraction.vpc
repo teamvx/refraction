@@ -22,8 +22,8 @@ $Project "Refraction Server DLL"
 {
     $Folder "Source Files"
     {                
-        $File   "$SRCDIR\game\shared\ustdlib_random.h"
-        $File   "$SRCDIR\game\shared\ustdlib_random.cpp"
+        $File   "$SRCDIR\game\shared\mt19937_random.h"
+        $File   "$SRCDIR\game\shared\mt19937_random.cpp"
 
         $File   "ai_eventresponse.cpp"
         $File   "ai_eventresponse.h"

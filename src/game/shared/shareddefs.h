@@ -11,11 +11,10 @@
 #pragma once
 #endif
 
-// VERSION NOTES:
-// The REFRACTION_VERSION macro contains DMMP structure (DEV-MAJOR-MINOR-PATCH)
-// The REFRACTION_VERSION_STR macro contains MMP-D structure where D can be -dev or nothing.
-#define REFRACTION_VERSION      1011
-#define REFRACTION_VERSION_STR  "0.1.1-dev"
+#define MOD_WATERMARK_STR   "Refraction"
+#define MOD_VERSION_MAJOR   0
+#define MOD_VERSION_MINOR   1
+#define MOD_VERSION_PATCH   3
 
 #define TICK_INTERVAL           (gpGlobals->interval_per_tick)
 

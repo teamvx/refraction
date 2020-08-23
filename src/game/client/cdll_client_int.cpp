@@ -87,7 +87,7 @@
 #include "ihudlcd.h"
 #include "toolframework_client.h"
 #include "hltvcamera.h"
-#include "ustdlib_random.h"
+#include "mt19937_random.h"
 #include "vgui/ILocalize.h"
 #include "vgui/IVGui.h"
 #include "ixboxsystem.h"

@@ -16,7 +16,7 @@
 
 static ConVar cl_showfps( "cl_showfps", "0", 0, "Draw fps meter at top of screen" );
 static ConVar cl_showpos( "cl_showpos", "0", 0, "Draw current position at top of screen" );
-ConVar cl_showrefwm( "cl_showrefwm", "1", 0, "Draw mod version at top of screen" );
+static ConVar cl_showmod( "cl_showmod", "1", 0, "Draw mod watermark and version at top of screen" );
 
 extern bool g_bDisplayParticlePerformance;
 int GetParticlePerformance();
@@ -144,7 +144,7 @@ bool CFPSPanel::ShouldDraw( void )
         return true;
     }
 
-    if( ( !cl_showfps.GetBool() || gpGlobals->absoluteframetime <= 0 ) && !cl_showpos.GetBool() && !cl_showrefwm.GetBool() ) {
+    if( ( !cl_showfps.GetBool() || gpGlobals->absoluteframetime <= 0 ) && !cl_showpos.GetBool() && !cl_showmod.GetBool() ) {
         m_bLastDraw = false;
         return false;
     }
@@ -201,13 +201,13 @@ void CFPSPanel::Paint()
     int x = 2;
     int iFontTall = g_pVGuiSurface->GetFontTall( m_hFont );
 
-    if( cl_showrefwm.GetBool() ) {
+    if( cl_showmod.GetBool() ) {
 #ifdef _DEBUG
         const char *pszConfig = "DEBUG";
 #else
         const char *pszConfig = "RELEASE";
 #endif
-        g_pMatSystemSurface->DrawColoredText( m_hFont, x, 2 + ( i++ * iFontTall ), 255, 255, 255, 255, "Refraction %s(%04d) %s", REFRACTION_VERSION_STR, REFRACTION_VERSION, pszConfig );
+        g_pMatSystemSurface->DrawColoredText( m_hFont, x, 2 + ( i++ * iFontTall ), 255, 255, 255, 255, "%s %u.%u.%u-%s", MOD_WATERMARK_STR, MOD_VERSION_MAJOR, MOD_VERSION_MINOR, MOD_VERSION_PATCH, pszConfig );
     }
 
     float frametime = gpGlobals->frametime;
