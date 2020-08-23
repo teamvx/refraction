@@ -1686,23 +1686,13 @@ void CWeaponRPG::SuppressGuiding( bool state )
 {
     m_bHideGuiding = state;
 
-    if ( m_hLaserDot == NULL )
-    {
-        StartGuiding();
+    if( m_hLaserDot == NULL )
+        return;
 
-        //STILL!?
-        if ( m_hLaserDot == NULL )
-             return;
-    }
-
-    if ( state )
-    {
+    if( state )
         m_hLaserDot->TurnOff();
-    }
     else
-    {
         m_hLaserDot->TurnOn();
-    }
 }
 
 //-----------------------------------------------------------------------------
@@ -1711,9 +1701,8 @@ void CWeaponRPG::SuppressGuiding( bool state )
 //-----------------------------------------------------------------------------
 bool CWeaponRPG::Lower( void )
 {
-    if ( m_hMissile != NULL )
+    if( m_hMissile != NULL && IsGuiding() )
         return false;
-
     return BaseClass::Lower();
 }
 
@@ -1730,31 +1719,17 @@ void CWeaponRPG::ItemPostFrame( void )
         return;
 
     //If we're pulling the weapon out for the first time, wait to draw the laser
-    if ( ( m_bInitialStateUpdate ) && ( GetActivity() != ACT_VM_DRAW ) )
-    {
+    if ( ( m_bInitialStateUpdate ) && ( GetActivity() != ACT_VM_DRAW ) ) {
         StartGuiding();
         m_bInitialStateUpdate = false;
     }
 
     // Supress our guiding effects if we're lowered
-    if ( GetIdealActivity() == ACT_VM_IDLE_LOWERED || GetIdealActivity() == ACT_VM_RELOAD )
-    {
-        SuppressGuiding();
-    }
-    else
-    {
-        SuppressGuiding( false );
-    }
+    SuppressGuiding( GetIdealActivity() == ACT_VM_IDLE_LOWERED || GetIdealActivity() == ACT_VM_RELOAD );
 
     //Player has toggled guidance state
-    //Adrian: Players are not allowed to remove the laser guide in single player anymore, bye!
-    if ( g_pGameRules->IsMultiplayer() == true )
-    {
-        if ( pPlayer->m_afButtonPressed & IN_ATTACK2 )
-        {
-            ToggleGuiding();
-        }
-    }
+    if( pPlayer->m_afButtonPressed & IN_ATTACK2 )
+        ToggleGuiding();
 
     //Move the laser
     UpdateLaserPosition();
@@ -1871,16 +1846,15 @@ void CWeaponRPG::StopGuiding( void )
 {
     m_bGuiding = false;
 
-    WeaponSound( WPS_SPECIAL2 );
-
     StopLaserEffects();
 
     // Kill the dot completely
-    if ( m_hLaserDot != NULL )
-    {
+    if( m_hLaserDot != NULL ) {
         m_hLaserDot->TurnOff();
         UTIL_Remove( m_hLaserDot );
         m_hLaserDot = NULL;
+
+        WeaponSound( WPS_SPECIAL2 );
     }
 }
 
@@ -2008,7 +1982,8 @@ bool CWeaponRPG::Reload( void )
 
     if ( pOwner == NULL )
         return false;
-
+    if( pOwner->GetActiveWeapon() != this )
+        return false;
     if ( pOwner->GetAmmoCount(m_iPrimaryAmmoType) <= 0 )
         return false;
 
