@@ -41,8 +41,8 @@ Scheme
         "GameMenu.Button.TextY"         "3"
         "GameMenu.Button.Width"         "128"
         "GameMenu.Button.Height"        "20"
-        "GameMenu.Button.RolloverSound" "ui/button_rollover.wav"
-        "GameMenu.Button.ClickSound"    "ui/button_click.wav"
+        "GameMenu.Button.RolloverSound" "ui/buttonrollover.wav"
+        "GameMenu.Button.ClickSound"    "ui/buttonclickrelease.wav"
     }
     
     //
