@@ -26,8 +26,8 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-ConVar  cl_winddir          ( "cl_winddir", "0", FCVAR_CHEAT, "Weather effects wind direction angle" );
-ConVar  cl_windspeed        ( "cl_windspeed", "0", FCVAR_CHEAT, "Weather effects wind speed scalar" );
+ConVar cl_winddir( "cl_winddir", "0", FCVAR_CHEAT, "Weather effects wind direction angle" );
+ConVar cl_windspeed( "cl_windspeed", "0", FCVAR_CHEAT, "Weather effects wind speed scalar" );
 
 Vector g_vSplashColor( 0.5, 0.5, 0.5 );
 float g_flSplashScale = 0.15;
@@ -294,56 +294,49 @@ void CClient_Precipitation::ClientThink()
 //-----------------------------------------------------------------------------
 inline bool CClient_Precipitation::SimulateRain( CPrecipitationParticle* pParticle, float dt )
 {
-    if (GetRemainingLifetime( pParticle ) < 0.0f)
+    if( GetRemainingLifetime( pParticle ) < 0.0f )
         return false;
 
     Vector vOldPos = pParticle->m_Pos;
 
     // Update position
     VectorMA( pParticle->m_Pos, dt, pParticle->m_Velocity,
-                pParticle->m_Pos );
+              pParticle->m_Pos );
 
-        // wind blows rain around
-    for ( int i = 0 ; i < 2 ; i++ )
-        {
-        if ( pParticle->m_Velocity[i] < s_WindVector[i] )
-            {
+    // wind blows rain around
+    for( int i = 0; i < 2; i++ ) {
+        if( pParticle->m_Velocity[i] < s_WindVector[i] ) {
             pParticle->m_Velocity[i] += ( 5 / pParticle->m_Mass );
 
             // clamp
-            if ( pParticle->m_Velocity[i] > s_WindVector[i] )
+            if( pParticle->m_Velocity[i] > s_WindVector[i] )
                 pParticle->m_Velocity[i] = s_WindVector[i];
-            }
-        else if (pParticle->m_Velocity[i] > s_WindVector[i] )
-            {
+        }
+        else if( pParticle->m_Velocity[i] > s_WindVector[i] ) {
             pParticle->m_Velocity[i] -= ( 5 / pParticle->m_Mass );
 
             // clamp.
-            if ( pParticle->m_Velocity[i] < s_WindVector[i] )
+            if( pParticle->m_Velocity[i] < s_WindVector[i] )
                 pParticle->m_Velocity[i] = s_WindVector[i];
         }
     }
 
-        // No longer in the air? punt.
-        if ( !IsInAir( pParticle->m_Pos ) )
-        {
-            // Possibly make a splash if we hit a water surface and it's in front of the view.
-            if ( m_Splashes.Count() < 20 )
-            {
-                if ( RandomInt( 0, 100 ) < r_RainSplashPercentage.GetInt() )
-                {
-                    trace_t trace;
-                    UTIL_TraceLine(vOldPos, pParticle->m_Pos, MASK_WATER, NULL, COLLISION_GROUP_NONE, &trace);
-                    if( trace.fraction < 1 )
-                    {
-                        m_Splashes.AddToTail( trace.endpos );
-                    }
+    // No longer in the air? punt.
+    if( !IsInAir( pParticle->m_Pos ) ) {
+        // Possibly make a splash if we hit a water surface and it's in front of the view.
+        if( m_Splashes.Count() < 20 ) {
+            if( RandomInt( 0, 100 ) < r_RainSplashPercentage.GetInt() ) {
+                trace_t trace;
+                UTIL_TraceLine( vOldPos, pParticle->m_Pos, MASK_WATER, NULL, COLLISION_GROUP_NONE, &trace );
+                if( trace.fraction < 1 ) {
+                    m_Splashes.AddToTail( trace.endpos );
                 }
             }
-
-            // Tell the framework it's time to remove the particle from the list
-            return false;
         }
+
+        // Tell the framework it's time to remove the particle from the list
+        return false;
+    }
 
     // We still want this particle
     return true;
@@ -1103,22 +1096,16 @@ void CClient_Precipitation::EmitParticles( float fTimeDelta )
 
 void CClient_Precipitation::ComputeWindVector( )
 {
-    // Now affected by env_wind!
-    GetWindspeedAtTime( gpGlobals->curtime, s_WindVector );
-
-#if 0
     // Compute the wind direction
-    QAngle windangle( 0, cl_winddir.GetFloat(), 0 );    // used to turn wind yaw direction into a vector
+    QAngle windangle( 0, cl_winddir.GetFloat(), 0 ); // used to turn wind yaw direction into a vector
 
     // Randomize the wind angle and speed slightly to get us a little variation
     windangle[1] = windangle[1] + random->RandomFloat( -10, 10 );
-    float windspeed = cl_windspeed.GetFloat() * (1.0 + random->RandomFloat( -0.2, 0.2 ));
+    float windspeed = cl_windspeed.GetFloat() * ( 1.0 + random->RandomFloat( -0.2, 0.2 ) );
 
     AngleVectors( windangle, &s_WindVector );
     VectorScale( s_WindVector, windspeed, s_WindVector );
-#endif
 }
-
 
 CHandle<CClient_Precipitation> g_pPrecipHackEnt;
 
