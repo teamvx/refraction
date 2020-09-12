@@ -14,9 +14,8 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-static ConVar cl_showfps( "cl_showfps", "0", 0, "Draw fps meter at top of screen" );
-static ConVar cl_showpos( "cl_showpos", "0", 0, "Draw current position at top of screen" );
-static ConVar cl_showmod( "cl_showmod", "1", 0, "Draw mod watermark and version at top of screen" );
+static ConVar cl_showfps( "cl_showfps", "0", FCVAR_ARCHIVE, "Draw fps meter at top of screen" );
+static ConVar cl_showpos( "cl_showpos", "0", FCVAR_ARCHIVE, "Draw current position at top of screen" );
 
 extern bool g_bDisplayParticlePerformance;
 int GetParticlePerformance();
@@ -40,31 +39,18 @@ protected:
 private:
     void ComputeSize( void );
 
-    void InitAverages()
-    {
-        m_AverageFPS = -1;
-        m_lastRealTime = -1;
-        m_high = -1;
-        m_low = -1;
-    }
-
     vgui::HFont m_hFont;
-    float       m_AverageFPS;
-    float       m_lastRealTime;
-    int         m_high;
-    int         m_low;
-    bool        m_bLastDraw;
-    int         m_BatteryPercent;
-    float       m_lastBatteryPercent;
+    float m_flFPS;
+    char m_szWatermark[256];
 };
 
-#define FPS_PANEL_WIDTH 360
+#define FPS_PANEL_WIDTH 400
 
 //-----------------------------------------------------------------------------
 // Purpose:
 // Input  : *parent -
 //-----------------------------------------------------------------------------
-CFPSPanel::CFPSPanel( vgui::VPANEL parent ) : BaseClass( NULL, "CFPSPanel" )
+CFPSPanel::CFPSPanel( vgui::VPANEL parent ) : BaseClass( NULL, "CFPSPanel" ), m_hFont( 0 ), m_flFPS( -1.0 )
 {
     SetParent( parent );
     SetVisible( false );
@@ -73,14 +59,10 @@ CFPSPanel::CFPSPanel( vgui::VPANEL parent ) : BaseClass( NULL, "CFPSPanel" )
     SetFgColor( Color( 0, 0, 0, 255 ) );
     SetPaintBackgroundEnabled( false );
 
-    m_hFont = 0;
-    m_BatteryPercent = -1;
-    m_lastBatteryPercent = -1.0f;
-
     ComputeSize();
+    g_pVGui->AddTickSignal( GetVPanel(), 250 );
 
-    vgui::ivgui()->AddTickSignal( GetVPanel(), 250 );
-    m_bLastDraw = false;
+    Q_snprintf( m_szWatermark, sizeof( m_szWatermark ), "%s %u.%u.%u (%s %s)", MOD_NAME, MOD_VERSION_MAJOR, MOD_VERSION_MINOR, MOD_VERSION_PATCH, __DATE__, __TIME__ );
 }
 
 //-----------------------------------------------------------------------------
@@ -88,6 +70,7 @@ CFPSPanel::CFPSPanel( vgui::VPANEL parent ) : BaseClass( NULL, "CFPSPanel" )
 //-----------------------------------------------------------------------------
 CFPSPanel::~CFPSPanel( void )
 {
+
 }
 
 //-----------------------------------------------------------------------------
@@ -105,12 +88,12 @@ void CFPSPanel::OnScreenSizeChanged( int iOldWide, int iOldTall )
 void CFPSPanel::ComputeSize( void )
 {
     int wide, tall;
-    vgui::ipanel()->GetSize( GetVParent(), wide, tall );
-
+    g_pVGuiPanel->GetSize( GetVParent(), wide, tall );
+    
     int x = wide - FPS_PANEL_WIDTH;
     int y = 0;
     SetPos( x, y );
-    SetSize( FPS_PANEL_WIDTH, 6 * vgui::surface()->GetFontTall( m_hFont ) + 8 );
+    SetSize( FPS_PANEL_WIDTH, 6 * g_pVGuiSurface->GetFontTall( m_hFont ) + 12 );
 }
 
 void CFPSPanel::ApplySchemeSettings( vgui::IScheme *pScheme )
@@ -129,9 +112,8 @@ void CFPSPanel::ApplySchemeSettings( vgui::IScheme *pScheme )
 void CFPSPanel::OnTick( void )
 {
     bool bVisible = ShouldDraw();
-    if( IsVisible() != bVisible ) {
+    if( IsVisible() != bVisible )
         SetVisible( bVisible );
-    }
 }
 
 //-----------------------------------------------------------------------------
@@ -140,55 +122,37 @@ void CFPSPanel::OnTick( void )
 //-----------------------------------------------------------------------------
 bool CFPSPanel::ShouldDraw( void )
 {
-    if( g_bDisplayParticlePerformance ) {
-        return true;
-    }
-
-    if( ( !cl_showfps.GetBool() || gpGlobals->absoluteframetime <= 0 ) && !cl_showpos.GetBool() && !cl_showmod.GetBool() ) {
-        m_bLastDraw = false;
-        return false;
-    }
-
-    if( !m_bLastDraw ) {
-        m_bLastDraw = true;
-        InitAverages();
-    }
+    // TODO: Uncomment this when development is done...
+    //return g_bDisplayParticlePerformance || cl_showfps.GetBool() || cl_showpos.GetBool();
     return true;
 }
 
-//-----------------------------------------------------------------------------
-// Purpose:
-//-----------------------------------------------------------------------------
-void GetFPSColor( int nFps, unsigned char ucColor[3] )
+static void UTIL_GetFPSColor( int iFPS, Color &c )
 {
-    // Red color - [00..29] fps
-    ucColor[0] = 0xFF;
-    ucColor[1] = 0x00;
-    ucColor[2] = 0x00;
-    
-    // Cyan color - [100..N] fps
-    if( nFps >= 100 ) {
-        ucColor[0] = 0x00;
-        ucColor[1] = 0xFF;
-        ucColor[2] = 0xFF;
+    if( iFPS >= 100 ) {
+        c[0] = 0x00;
+        c[1] = 0xFF;
+        c[2] = 0xFF;
         return;
     }
 
-    // Green color - [50..99] fps
-    if( nFps >= 50 ) {
-        ucColor[0] = 0x00;
-        ucColor[1] = 0xFF;
-        ucColor[2] = 0x00;
+    if( iFPS >= 50 ) {
+        c[0] = 0x00;
+        c[1] = 0xFF;
+        c[2] = 0x00;
         return;
     }
 
-    // Yellow color - [30..49] fps
-    if( nFps >= 30 ) {
-        ucColor[0] = 0xFF;
-        ucColor[1] = 0xFF;
-        ucColor[2] = 0x00;
+    if( iFPS >= 30 ) {
+        c[0] = 0xFF;
+        c[1] = 0xFF;
+        c[2] = 0x00;
         return;
     }
+
+    c[0] = 0xFF;
+    c[1] = 0x00;
+    c[2] = 0x00;
 }
 
 //-----------------------------------------------------------------------------
@@ -197,66 +161,54 @@ void GetFPSColor( int nFps, unsigned char ucColor[3] )
 //-----------------------------------------------------------------------------
 void CFPSPanel::Paint()
 {
-    int i = 0;
-    int x = 2;
+    int ypos = 2;
     int iFontTall = g_pVGuiSurface->GetFontTall( m_hFont );
+    
+    // Draw mod/game watermark...
+    g_pMatSystemSurface->DrawColoredText( m_hFont, 2, ypos, 255, 255, 255, 255, "%s %u.%u.%u (%s %s)", MOD_NAME, MOD_VERSION_MAJOR, MOD_VERSION_MINOR, MOD_VERSION_PATCH, __DATE__, __TIME__ );
+    ypos += 2 + iFontTall;
 
-    if( cl_showmod.GetBool() ) {
-#ifdef _DEBUG
-        const char *pszConfig = "DEBUG";
-#else
-        const char *pszConfig = "RELEASE";
-#endif
-        g_pMatSystemSurface->DrawColoredText( m_hFont, x, 2 + ( i++ * iFontTall ), 255, 255, 255, 255, "%s %u.%u.%u-%s", MOD_WATERMARK_STR, MOD_VERSION_MAJOR, MOD_VERSION_MINOR, MOD_VERSION_PATCH, pszConfig );
-    }
-
-    float frametime = gpGlobals->frametime;
-    if( cl_showfps.GetBool() && frametime > 0.0 ) {
-        if( m_lastRealTime != -1.0 ) {
-            float fps = ( 1.0 / frametime );
-            unsigned char ucColor[3] = { 0x00 };
-
-            // Average FPS
-            if( m_AverageFPS < 0.0 ) {
-                m_AverageFPS = fps;
-                m_high = (int)m_AverageFPS;
-                m_low = (int)m_AverageFPS;
-            }
-            else {
-                m_AverageFPS *= 0.9;
-                m_AverageFPS += ( fps * 0.1 );
-            }
-
-            int fps_i = (int)fps;
-            if( fps_i < m_low ) m_low = fps_i;
-            if( fps_i > m_high ) m_high = fps_i;
-
-            GetFPSColor( fps_i, ucColor );
-            g_pMatSystemSurface->DrawColoredText( m_hFont, x, 2 + ( i++ * iFontTall ), ucColor[0], ucColor[1], ucColor[2], 0xFF, "%d fps (%d..%d), %.2fms at %s", fps_i, m_low, m_high, frametime * 1000.0, engine->GetLevelName() );
+    // Draw FPS
+    float flFrametime = gpGlobals->absoluteframetime;
+    if( cl_showfps.GetBool() ) {
+        float flFPS = ( 1.0 / flFrametime );
+        if( m_flFPS >= 0.0 ) {
+            m_flFPS *= 0.9;
+            m_flFPS += ( flFPS * 0.1 );
         }
-    }
-    m_lastRealTime = gpGlobals->realtime;
+        else m_flFPS = flFPS;
 
-    int cl_showpos_v = cl_showpos.GetInt();
-    if( cl_showpos_v > 0 ) {
-        C_BasePlayer *player = C_BasePlayer::GetLocalPlayer();
+        Color c; UTIL_GetFPSColor( m_flFPS, c );
+        g_pMatSystemSurface->DrawColoredText( m_hFont, 2, ypos, c[0], c[1], c[2], 255, "%.02f fps (%.02fms) at %s", m_flFPS, flFrametime * 1000.0, engine->GetLevelName() );
+        ypos += 2 + iFontTall;
+    }
+
+    // Draw position, angles and speed
+    int cl_showpos_int = cl_showpos.GetInt();
+    if( cl_showpos_int > 0 ) {
+        C_BasePlayer *pPlayer = C_BasePlayer::GetLocalPlayer();
         Vector origin = MainViewOrigin();
         QAngle angles = MainViewAngles();
-        if( player && cl_showpos_v == 2 ) {
-            origin = player->GetAbsOrigin();
-            angles = player->GetAbsAngles();
+        Vector velocity = Vector( 0 );
+        if( pPlayer != NULL ) {
+            if( cl_showpos_int >= 2 ) {
+                origin = pPlayer->GetLocalOrigin();
+                angles = pPlayer->GetLocalAngles();
+            }
+            velocity = pPlayer->GetAbsVelocity();
         }
 
-        // Print pos & angles
-        g_pMatSystemSurface->DrawColoredText( m_hFont, x, 2 + ( i++ * iFontTall ), 255, 255, 255, 255, "pos:  %.02f %.02f %.02f", origin.x, origin.y, origin.z );
-        g_pMatSystemSurface->DrawColoredText( m_hFont, x, 2 + ( i++ * iFontTall ), 255, 255, 255, 255, "ang:  %.02f %.02f %.02f", angles.x, angles.y, angles.z );
+        // Position
+        g_pMatSystemSurface->DrawColoredText( m_hFont, 2, ypos, 255, 255, 255, 255, "pos: %.02f %.02f %.02f", origin.x, origin.y, origin.z );
+        ypos += 2 + iFontTall;
 
-        // Velocity
-        Vector velocity( 0 );
-        if( player ) {
-            velocity = player->GetLocalVelocity();
-        }
-        g_pMatSystemSurface->DrawColoredText( m_hFont, x, 2 + ( i++ * iFontTall ), 255, 255, 255, 255, "vel:  %.04f", velocity.Length() );
+        // Rotation
+        g_pMatSystemSurface->DrawColoredText( m_hFont, 2, ypos, 255, 255, 255, 255, "ang: %.02f %.02f %.02f", angles.x, angles.y, angles.z );
+        ypos += 2 + iFontTall;
+
+        // Speed
+        g_pMatSystemSurface->DrawColoredText( m_hFont, 2, ypos, 255, 255, 255, 255, "spd: %.04f", velocity.Length() );
+        ypos += 2 + iFontTall;
     }
 }
 

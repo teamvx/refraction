@@ -443,18 +443,6 @@ bool CServerGameDLL::DLLInit( CreateInterfaceFn appSystemFactory, CreateInterfac
         return false;
     }
 
-    // und: At the moment I understood that random is always random-ish on each
-    // side of the client-server things, project were already built with changed vstdlib/random.h
-    // so this is here for better times...
-#if 0
-    // A little hack to get vstdlib's seed...
-    IUniformRandomStream *vstdlib_random = (IUniformRandomStream *)appSystemFactory( VENGINE_SERVER_RANDOM_INTERFACE_VERSION, NULL );
-    if( vstdlib_random ) {
-        CUniformRandomStream *stream = (CUniformRandomStream *)vstdlib_random;
-        random->SetSeed( stream->m_idum );
-    }
-#endif
-
     serverpluginhelpers = (IServerPluginHelpers *)appSystemFactory( INTERFACEVERSION_ISERVERPLUGINHELPERS, NULL );
     scenefilecache      = (ISceneFileCache *)appSystemFactory( SCENE_FILE_CACHE_INTERFACE_VERSION, NULL );
     if( !serverpluginhelpers || !scenefilecache ) {
@@ -557,6 +545,7 @@ bool CServerGameDLL::DLLInit( CreateInterfaceFn appSystemFactory, CreateInterfac
     // init the gamestatsupload connection
     gamestatsuploader->InitConnection();
 
+    ConColorMsg( LOG_COLOR_YELLOW, "%s %u.%u.%u server dll (%s %s)\n", MOD_NAME, MOD_VERSION_MAJOR, MOD_VERSION_MINOR, MOD_VERSION_PATCH, __DATE__, __TIME__ );
     return true;
 }
 

@@ -26,12 +26,12 @@ class IUniformRandomStream
 {
 public:
     // Sets the seed of the random number generator
-    virtual void    SetSeed( int iSeed ) = 0;
+    virtual void SetSeed( int iSeed ) = 0;
 
     // Generates random numbers
-    virtual float   RandomFloat( float flMinVal = 0.0f, float flMaxVal = 1.0f ) = 0;
-    virtual int     RandomInt( int iMinVal, int iMaxVal ) = 0;
-    virtual float   RandomFloatExp( float flMinVal = 0.0f, float flMaxVal = 1.0f, float flExponent = 1.0f ) = 0;
+    virtual float RandomFloat( float flMinVal = 0.0f, float flMaxVal = 1.0f ) = 0;
+    virtual int RandomInt( int iMinVal, int iMaxVal ) = 0;
+    virtual float RandomFloatExp( float flMinVal = 0.0f, float flMaxVal = 1.0f, float flExponent = 1.0f ) = 0;
 };
 
 
@@ -44,20 +44,16 @@ public:
     CUniformRandomStream();
 
     // Sets the seed of the random number generator
-    virtual void    SetSeed( int iSeed );
+    virtual void SetSeed( int iSeed );
 
     // Generates random numbers
-    virtual float   RandomFloat( float flMinVal = 0.0f, float flMaxVal = 1.0f );
-    virtual int     RandomInt( int iMinVal, int iMaxVal );
-    virtual float   RandomFloatExp( float flMinVal = 0.0f, float flMaxVal = 1.0f, float flExponent = 1.0f );
-
-public:
-    // und: made it public to get initial seed for MT19937.
-    //      At the game DLLs loading stage it shouldn't change!
-    int m_idum;
-
+    virtual float RandomFloat( float flMinVal = 0.0f, float flMaxVal = 1.0f );
+    virtual int RandomInt( int iMinVal, int iMaxVal );
+    virtual float RandomFloatExp( float flMinVal = 0.0f, float flMaxVal = 1.0f, float flExponent = 1.0f );
+    
 private:
     int GenerateRandomNumber();
+    int m_idum;
     int m_iy;
     int m_iv[NTAB];
 
@@ -75,15 +71,15 @@ public:
     CGaussianRandomStream( IUniformRandomStream *pUniformStream = NULL );
 
     // Attaches to a random uniform stream
-    void    AttachToStream( IUniformRandomStream *pUniformStream = NULL );
+    void AttachToStream( IUniformRandomStream *pUniformStream = NULL );
 
     // Generates random numbers
-    float   RandomFloat( float flMean = 0.0f, float flStdDev = 1.0f );
+    float RandomFloat( float flMean = 0.0f, float flStdDev = 1.0f );
 
 private:
     IUniformRandomStream *m_pUniformStream;
-    bool    m_bHaveValue;
-    float   m_flRandomValue;
+    bool m_bHaveValue;
+    float m_flRandomValue;
 
     CThreadFastMutex m_mutex;
 };

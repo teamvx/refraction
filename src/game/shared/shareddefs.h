@@ -11,10 +11,10 @@
 #pragma once
 #endif
 
-#define MOD_WATERMARK_STR   "Refraction"
+#define MOD_NAME            "Refraction"
 #define MOD_VERSION_MAJOR   0
 #define MOD_VERSION_MINOR   1
-#define MOD_VERSION_PATCH   3
+#define MOD_VERSION_PATCH   4
 
 #define TICK_INTERVAL           (gpGlobals->interval_per_tick)
 
