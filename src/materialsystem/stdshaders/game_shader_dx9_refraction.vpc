@@ -9,7 +9,7 @@ $Macro GAMENAME     "refraction"
 
 $Include "$SRCDIR\materialsystem\stdshaders\game_shader_dx9_base.vpc"
 
-$Project "Refraction Shader DLL (DX9)"
+$Project "game_shader_dx9"
 {
     $Folder "Source Files"
     {

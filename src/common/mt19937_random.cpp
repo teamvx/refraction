@@ -1,8 +1,4 @@
-#include "cbase.h"
 #include "mt19937_random.h"
-
-// memdbgon must be the last include file in a .cpp file!!!
-#include "tier0/memdbgon.h"
 
 static CMT19937UniformRandomStream s_Mt19937;
 IUniformRandomStream * g_pMt19937 = (IUniformRandomStream *)&s_Mt19937;
