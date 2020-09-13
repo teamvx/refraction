@@ -69,7 +69,7 @@
         "text_xpos"             "58"
         "text_ypos"             "0"
         "digit_xpos"            "7"
-        "digit_ypos"            "0"
+        "digit_ypos"            "-1"
     }
     
     // DISCUSSION: Would it be more suitable to name this HudStamina?
