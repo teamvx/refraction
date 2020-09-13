@@ -103,9 +103,8 @@
 #include "sourcevr/isourcevirtualreality.h"
 #include "client_virtualreality.h"
 #include "mumble.h"
-
 #include "discord_rpc_client.h"
-#include "GameUI/IGameUI2.h"
+#include "novelui/novelui.h"
 
 // NVNT includes
 #include "hud_macros.h"
@@ -157,7 +156,6 @@ ISceneFileCache *               scenefilecache = NULL;
 IUploadGameStats *              gamestatsuploader = NULL;
 IClientReplayContext *          g_pClientReplayContext = NULL;
 IHaptics *                      haptics = NULL; // NVNT haptics system interface singleton
-IGameUI2 *                      g_pGameUI2 = NULL;
 
 IUniformRandomStream *          random = g_pMt19937;
 static CGaussianRandomStream s_GaussianRandomStream;
@@ -751,45 +749,6 @@ bool IsEngineThreaded()
     return g_pcv_ThreadMode ? g_pcv_ThreadMode->GetBool() : false;
 }
 
-static void GameUI2_Initialize()
-{
-    if( CommandLine()->FindParm( "-nogameui2" ) ) {
-        GameUI2_Warning( "GameUI2: Disabled.\n" );
-        return;
-    }
-
-    // GameUI2.dll path
-    char gameui2DllPath[2048] = { 0 };
-    Q_snprintf( gameui2DllPath, sizeof( gameui2DllPath ), "%s/bin/gameui2" DLL_EXT_STRING, engine->GetGameDirectory() );
-    V_FixSlashes( gameui2DllPath );
-    GameUI2_Message( "GameUI2: Dll path - %s\n", gameui2DllPath );
-
-    // Load DLL
-    CSysModule *pModule = Sys_LoadModule( gameui2DllPath );
-    if( !pModule ) {
-        GameUI2_Warning( "GameUI2: No gameui2.dll found!\n" );
-        return;
-    }
-
-    // Get factory
-    CreateInterfaceFn factory = Sys_GetFactory( pModule );
-    if( !factory ) {
-        GameUI2_Warning( "GameUI2: DLL is present, but have no tier1-compatible interface!\n" );
-        return;
-    }
-
-    // Make GameUI2
-    g_pGameUI2 = (IGameUI2 *)factory( GAMEUI2_INTERFACE_VERSION, NULL );
-    if( !g_pGameUI2 ) {
-        GameUI2_Warning( "GameUI2: DLL is present & tier1-compatible, but no exposed IGameUI2 (%s) found!", GAMEUI2_INTERFACE_VERSION );
-        return;
-    }
-
-    factorylist_t factories;
-    FactoryList_Retrieve( factories );
-    g_pGameUI2->Initialize( factories.appSystemFactory, gpGlobals );
-}
-
 //-----------------------------------------------------------------------------
 // Constructor
 //-----------------------------------------------------------------------------
@@ -909,10 +868,7 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CreateInterfaceFn physi
 
     vgui::VGui_InitMatSysInterfacesList( "ClientDLL", &appSystemFactory, 1 );
 
-    // Add the client systems.
-
-    // Client Leaf System has to be initialized first, since DetailObjectSystem uses it
-    IGameSystem::Add( GameStringSystem() );
+    IGameSystem::Add( GameStringSystem() ); // Client Leaf System has to be initialized first, since DetailObjectSystem uses it
     IGameSystem::Add( SoundEmitterSystem() );
     IGameSystem::Add( ToolFrameworkClientSystem() );
     IGameSystem::Add( ClientLeafSystem() );
@@ -926,6 +882,12 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CreateInterfaceFn physi
     IGameSystem::Add( PerfVisualBenchmark() );
     IGameSystem::Add( MumbleSystem() );
     IGameSystem::Add( g_pDiscordRPC );
+    
+    // Add -nogameui to disable NovelUI...
+    if( !CommandLine()->FindParm( "-nogameui" ) )
+        IGameSystem::Add( g_pNovelUI );
+    else
+        ConColorMsg( LOG_COLOR_B_RED, "NovelUI: Disabled...\n" );
 
     modemanager->Init();
     g_pClientMode->InitViewport();
@@ -936,9 +898,7 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CreateInterfaceFn physi
         return false;
     }
     g_pClientMode->Enable();
-
-    GameUI2_Initialize();
-
+    
     if( !view ) {
         view = (IViewRender *)&g_DefaultViewRender;
     }
@@ -998,8 +958,6 @@ void CHLClient::PostInit()
 {
     IGameSystem::PostInitAllSystems();
     g_ClientVirtualReality.StartupComplete();
-    if( g_pGameUI2 )
-        g_pGameUI2->PostInit();
 }
 
 //-----------------------------------------------------------------------------
@@ -1033,11 +991,6 @@ void CHLClient::Shutdown( void )
     UncacheAllMaterials();
 
     IGameSystem::ShutdownAllSystems();
-
-    if( g_pGameUI2 ) {
-        g_pGameUI2->PreShutdown();
-        g_pGameUI2->Shutdown();
-    }
 
     gHUD.Shutdown();
     VGui_Shutdown();
@@ -1075,9 +1028,8 @@ void CHLClient::Shutdown( void )
 int CHLClient::HudVidInit( void )
 {
     gHUD.VidInit();
+    IGameSystem::VidInitAllSystems();
     GetClientVoiceMgr()->VidInit();
-    if( g_pGameUI2 )
-        g_pGameUI2->VidInit();
     return 1;
 }
 
@@ -1112,10 +1064,6 @@ void CHLClient::HudUpdate( bool bActive )
     // I don't think this is necessary any longer, but I will leave it until
     // I can check into this further.
     C_BaseTempEntity::CheckDynamicTempEnts();
-
-    if( g_pGameUI2 ) {
-        g_pGameUI2->OnUpdate();
-    }
 }
 
 //-----------------------------------------------------------------------------
@@ -1327,7 +1275,7 @@ uint CHLClient::GetPresenceID( const char *pIDName )
     return presence->GetPresenceID( pIDName );
 }
 
-const char *CHLClient::GetPropertyIdString( const uint id )
+const char * CHLClient::GetPropertyIdString( const uint id )
 {
     return presence->GetPropertyIdString( id );
 }
@@ -1418,10 +1366,6 @@ void CHLClient::LevelInitPreEntity( char const *pMapName )
     // Check low violence settings for this map
     g_RagdollLVManager.SetLowViolence( pMapName );
     gHUD.LevelInit();
-
-    if( g_pGameUI2 ) {
-        g_pGameUI2->LevelInitPreEntity( pMapName );
-    }
 }
 
 //-----------------------------------------------------------------------------
@@ -1432,10 +1376,6 @@ void CHLClient::LevelInitPostEntity()
     IGameSystem::LevelInitPostEntityAllSystems();
     C_PhysPropClientside::RecreateAll();
     internalCenterPrint->Clear();
-
-    if( g_pGameUI2 ) {
-        g_pGameUI2->LevelInitPostEntity();
-    }
 }
 
 //-----------------------------------------------------------------------------
@@ -1492,10 +1432,6 @@ void CHLClient::LevelShutdown( void )
     beams->ClearBeams();
     ParticleMgr()->RemoveAllEffects();
     StopAllRumbleEffects();
-
-    if( g_pGameUI2 ) {
-        g_pGameUI2->LevelShutdown();
-    }
 
     gHUD.LevelShutdown();
     internalCenterPrint->Clear();

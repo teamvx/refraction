@@ -13,7 +13,7 @@ $Configuration
     $Compiler
     {
         $AdditionalIncludeDirectories   "$BASE;$GAMECLIENT\hl2;$GAMECLIENT\hl2\elements;$GAMESHARED\hl2;$GAMESHARED\episodic;$SRCDIR\public"
-        $PreprocessorDefinitions        "$BASE;GAMEUI2_CLIENT;HL2_CLIENT_DLL;HL2_EPISODIC;REFRACTION"
+        $PreprocessorDefinitions        "$BASE;HL2_CLIENT_DLL;HL2_EPISODIC;REFRACTION"
     }
 }
 
@@ -35,6 +35,17 @@ $Project "game_client"
         $File "$GAMECLIENT\hud_posture.cpp"
         $File "$GAMECLIENT\hud_squadstatus.cpp"
         $File "$GAMESHARED\script_intro_shared.cpp"
+
+        $Folder "Novel UI"
+        {
+            $File "$GAMECLIENT\novelui\novelui.cpp"
+            $File "$GAMECLIENT\novelui\novelui.h"
+            $File "$GAMECLIENT\novelui\rootpanel.cpp"
+            $File "$GAMECLIENT\novelui\rootpanel.h"
+
+            $File "$GAMECLIENT\novelui\gamelogo.cpp"
+            $File "$GAMECLIENT\novelui\gamemenu.cpp"
+        }
 
         $Folder "HalfLife 2"
         {

@@ -13,7 +13,6 @@ $Group "game"
 {
     "client"
     "server"
-    "gameui2_dll"
     
     "mathlib"
     "tier1"

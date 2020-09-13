@@ -58,7 +58,6 @@ class IEngineReplay;
 class IEngineClientReplay;
 class IReplayScreenshotManager;
 class CSteamID;
-class IGameUI2;
 
 //=============================================================================
 // HPE_BEGIN
@@ -110,7 +109,6 @@ extern IReplayManager *                 g_pReplayManager;
 extern IReplayScreenshotManager *       g_pReplayScreenshotManager;
 extern IEngineReplay *                  g_pEngineReplay;
 extern IEngineClientReplay *            g_pEngineClientReplay;
-extern IGameUI2 *                       g_pGameUI2;
 
 //=============================================================================
 // HPE_BEGIN

@@ -22,11 +22,6 @@ $Project "server"
     "game\server\server_refraction.vpc"                         [($WIN32||$X360||$POSIX) && $REFRACTION]
 }
 
-$Project "gameui2_dll"
-{
-    "gameui2\gameui2_dll.vpc"                                   [($WIN32||$X360||$POSIX) && $REFRACTION]
-}
-
 $Project "mathlib"
 {
     "mathlib\mathlib.vpc"                                       [$WINDOWS||$X360||$POSIX]

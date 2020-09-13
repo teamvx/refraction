@@ -14,7 +14,7 @@
 #define MOD_NAME            "Refraction"
 #define MOD_VERSION_MAJOR   0
 #define MOD_VERSION_MINOR   2
-#define MOD_VERSION_PATCH   0
+#define MOD_VERSION_PATCH   2
 
 #define TICK_INTERVAL           (gpGlobals->interval_per_tick)
 
@@ -533,13 +533,15 @@ typedef enum
 #define LOG_COLOR_GREEN     Color( 0x00, 0xCC, 0x00, 0xFF )
 #define LOG_COLOR_BLUE      Color( 0x00, 0x00, 0xCC, 0xFF )
 #define LOG_COLOR_WHITE     Color( 0xFF, 0xFF, 0xFF, 0xFF )
-#define LOG_COLOR_BLACK     Color( 0x00, 0x00, 0x00, 0xFF ) // why?
 #define LOG_COLOR_YELLOW    Color( 0xFF, 0xFF, 0x00, 0xFF )
 #define LOG_COLOR_ORANGE    Color( 0xFF, 0x80, 0x00, 0xFF )
 #define LOG_COLOR_PURPLE    Color( 0x80, 0x00, 0x80, 0xFF )
 #define LOG_COLOR_MAGENTA   Color( 0xFF, 0x00, 0xFF, 0xFF )
 #define LOG_COLOR_CYAN      Color( 0x00, 0xFF, 0xFF, 0xFF )
 #define LOG_COLOR_GREY      Color( 0xCC, 0xCC, 0xCC, 0xFF )
+#define LOG_COLOR_B_RED     Color( 0xFF, 0x00, 0x00, 0xFF )
+#define LOG_COLOR_B_GREEN   Color( 0x00, 0xFF, 0x00, 0xFF )
+#define LOG_COLOR_B_BLUE    Color( 0x00, 0x00, 0xFF, 0xFF )
 
 // All NPCs need this data
 enum

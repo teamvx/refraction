@@ -19,10 +19,10 @@
 #include "tier0/memdbgon.h"
 
 // Pointer to a member method of IGameSystem
-typedef void (IGameSystem::*GameSystemFunc_t)();
+typedef void (IGameSystem::*GameSystemFunc_t)( void );
 
 // Pointer to a member method of IGameSystem
-typedef void (IGameSystemPerFrame::*PerFrameGameSystemFunc_t)();
+typedef void (IGameSystemPerFrame::*PerFrameGameSystemFunc_t)( void );
 
 // Used to invoke a method of all added Game systems in order
 static void InvokeMethod( GameSystemFunc_t f, char const *timed = 0 );
@@ -92,7 +92,7 @@ CAutoGameSystemPerFrame::CAutoGameSystemPerFrame( char const *name ) :
 //-----------------------------------------------------------------------------
 // destructor, cleans up automagically....
 //-----------------------------------------------------------------------------
-IGameSystem::~IGameSystem()
+IGameSystem::~IGameSystem( void )
 {
     Remove( this );
 }
@@ -100,7 +100,7 @@ IGameSystem::~IGameSystem()
 //-----------------------------------------------------------------------------
 // destructor, cleans up automagically....
 //-----------------------------------------------------------------------------
-IGameSystemPerFrame::~IGameSystemPerFrame()
+IGameSystemPerFrame::~IGameSystemPerFrame( void )
 {
     Remove( this );
 }
@@ -134,7 +134,7 @@ void IGameSystem::Remove( IGameSystem* pSys )
 //-----------------------------------------------------------------------------
 // Removes *all* systems from the list of systems to update
 //-----------------------------------------------------------------------------
-void IGameSystem::RemoveAll(  )
+void IGameSystem::RemoveAll( void )
 {
     s_GameSystems.RemoveAll();
     s_GameSystemsPerFrame.RemoveAll();
@@ -144,7 +144,7 @@ void IGameSystem::RemoveAll(  )
 //-----------------------------------------------------------------------------
 // Client systems can use this to get at the map name
 //-----------------------------------------------------------------------------
-char const* IGameSystem::MapName()
+char const* IGameSystem::MapName( void )
 {
     return s_pMapName;
 }
@@ -164,7 +164,7 @@ CUserCmd *IGameSystem::RunCommandUserCmd()
 //-----------------------------------------------------------------------------
 // Invokes methods on all installed game systems
 //-----------------------------------------------------------------------------
-bool IGameSystem::InitAllSystems()
+bool IGameSystem::InitAllSystems( void )
 {
     int i;
 
@@ -235,10 +235,17 @@ void IGameSystem::PostInitAllSystems( void )
     InvokeMethod( &IGameSystem::PostInit, "PostInit" );
 }
 
-void IGameSystem::ShutdownAllSystems()
+void IGameSystem::ShutdownAllSystems( void )
 {
     InvokeMethodReverseOrder( &IGameSystem::Shutdown );
 }
+
+#ifdef CLIENT_DLL
+void IGameSystem::VidInitAllSystems( void )
+{
+    InvokeMethod( &IGameSystem::VidInit );
+}
+#endif
 
 void IGameSystem::LevelInitPreEntityAllSystems( char const* pMapName )
 {
@@ -260,17 +267,17 @@ void IGameSystem::LevelInitPostEntityAllSystems( void )
     InvokeMethod( &IGameSystem::LevelInitPostEntity, "LevelInitPostEntity" );
 }
 
-void IGameSystem::LevelShutdownPreClearSteamAPIContextAllSystems()
+void IGameSystem::LevelShutdownPreClearSteamAPIContextAllSystems( void )
 {
     InvokeMethodReverseOrder( &IGameSystem::LevelShutdownPreClearSteamAPIContext );
 }
 
-void IGameSystem::LevelShutdownPreEntityAllSystems()
+void IGameSystem::LevelShutdownPreEntityAllSystems( void )
 {
     InvokeMethodReverseOrder( &IGameSystem::LevelShutdownPreEntity );
 }
 
-void IGameSystem::LevelShutdownPostEntityAllSystems()
+void IGameSystem::LevelShutdownPostEntityAllSystems( void )
 {
     InvokeMethodReverseOrder( &IGameSystem::LevelShutdownPostEntity );
 
@@ -281,24 +288,24 @@ void IGameSystem::LevelShutdownPostEntityAllSystems()
     }
 }
 
-void IGameSystem::OnSaveAllSystems()
+void IGameSystem::OnSaveAllSystems( void )
 {
     InvokeMethod( &IGameSystem::OnSave );
 }
 
-void IGameSystem::OnRestoreAllSystems()
+void IGameSystem::OnRestoreAllSystems( void )
 {
     InvokeMethod( &IGameSystem::OnRestore );
 }
 
-void IGameSystem::SafeRemoveIfDesiredAllSystems()
+void IGameSystem::SafeRemoveIfDesiredAllSystems( void )
 {
     InvokeMethodReverseOrder( &IGameSystem::SafeRemoveIfDesired );
 }
 
 #ifdef CLIENT_DLL
 
-void IGameSystem::PreRenderAllSystems()
+void IGameSystem::PreRenderAllSystems( void )
 {
     VPROF("IGameSystem::PreRenderAllSystems");
     InvokePerFrameMethod( &IGameSystemPerFrame::PreRender );
@@ -318,26 +325,26 @@ void IGameSystem::UpdateAllSystems( float frametime )
     }
 }
 
-void IGameSystem::PostRenderAllSystems()
+void IGameSystem::PostRenderAllSystems( void )
 {
     InvokePerFrameMethod( &IGameSystemPerFrame::PostRender );
 }
 
 #else
 
-void IGameSystem::FrameUpdatePreEntityThinkAllSystems()
+void IGameSystem::FrameUpdatePreEntityThinkAllSystems( void )
 {
     InvokePerFrameMethod( &IGameSystemPerFrame::FrameUpdatePreEntityThink );
 }
 
-void IGameSystem::FrameUpdatePostEntityThinkAllSystems()
+void IGameSystem::FrameUpdatePostEntityThinkAllSystems( void )
 {
     SafeRemoveIfDesiredAllSystems();
 
     InvokePerFrameMethod( &IGameSystemPerFrame::FrameUpdatePostEntityThink );
 }
 
-void IGameSystem::PreClientUpdateAllSystems()
+void IGameSystem::PreClientUpdateAllSystems( void )
 {
     InvokePerFrameMethod( &IGameSystemPerFrame::PreClientUpdate );
 }
