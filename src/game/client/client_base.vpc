@@ -465,7 +465,7 @@ $Project
         // Files that doesn't use precompiler header.
         // It can be any external source needed to be compiled in...
         //
-        $File
+        $File                                               \
         "$GAMECLIENT\hud_lcd.cpp"                           \
         "$GAMECLIENT\in_mouse.cpp"                          \
         "$GAMECLIENT\mumble.cpp"                            \

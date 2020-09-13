@@ -6,7 +6,7 @@
 
 $Macro SRCDIR   "..\.."
 $Macro GAMENAME "refraction"
-$Include "$GAMECLIENT\client_base.vpc"
+$Include "$SRCDIR\game\client\client_base.vpc"
 
 $Configuration
 {
@@ -28,11 +28,13 @@ $Project "game_client"
     {
         $File "$GAMECLIENT\c_team_objectiveresource.cpp"
         $File "$GAMECLIENT\c_team_objectiveresource.h"          
-        $File "$GAMECLIENT\hud_chat.cpp"
         $File "$GAMECLIENT\death.cpp"
-        $File "$GAMESHARED\script_intro_shared.cpp"
+        $File "$GAMECLIENT\discord_rpc_client.cpp"
+        $File "$GAMECLIENT\discord_rpc_client.h"
+        $File "$GAMECLIENT\hud_chat.cpp"
         $File "$GAMECLIENT\hud_posture.cpp"
         $File "$GAMECLIENT\hud_squadstatus.cpp"
+        $File "$GAMESHARED\script_intro_shared.cpp"
 
         $Folder "HalfLife 2"
         {
@@ -129,13 +131,13 @@ $Project "game_client"
             $File "$GAMESHARED\hl2\env_headcrabcanister_shared.h"
             $File "$GAMESHARED\hl2\hl2_gamerules.cpp"
             $File "$GAMESHARED\hl2\hl2_gamerules.h"
+            $File "$GAMESHARED\hl2\hl2_player_shared.h"
             $File "$GAMESHARED\hl2\hl2_shareddefs.h"
             $File "$GAMESHARED\hl2\hl2_usermessages.cpp"
             $File "$GAMESHARED\hl2\hl_gamemovement.cpp"
             $File "$GAMESHARED\hl2\hl_gamemovement.h"
             $File "$GAMESHARED\hl2\hl_movedata.h"
             $File "$GAMESHARED\hl2\survival_gamerules.cpp"
-            $File "GAMESHARED\hl2\hl2_player_shared.h"
         }
     }
 }

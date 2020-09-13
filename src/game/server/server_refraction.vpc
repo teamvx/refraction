@@ -6,7 +6,7 @@
 
 $Macro SRCDIR       "..\.."
 $Macro GAMENAME     "refraction"
-$Include "$GAMESERVER\server_base.vpc"
+$Include "$SRCDIR\game\server\server_base.vpc"
 
 $Configuration
 {
@@ -17,7 +17,7 @@ $Configuration
     }
 }
 
-$Project "Refraction Server DLL"
+$Project "game_server"
 {
     $Folder "Source Files"
     {
