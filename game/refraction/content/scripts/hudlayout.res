@@ -87,7 +87,7 @@
         "AuxPowerDisabledAlpha" "70"
         "BarInsetX"             "8"
         "BarInsetY"             "15"
-        "BarWidth"              "80"
+        "BarWidth"              "74"
         "BarHeight"             "4"
         "BarChunkWidth"         "6"
         "BarChunkGap"           "2"
