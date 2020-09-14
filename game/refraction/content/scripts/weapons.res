@@ -2,7 +2,7 @@
 {
     weapon_357
     {
-        "printname"             "#HL2_357Handgun"
+        "printname"             "#Refraction_357Handgun"
         "viewmodel"             "models/weapons/v_357.mdl"
         "playermodel"           "models/weapons/w_357.mdl"
         "anim_prefix"           "python"
@@ -68,7 +68,7 @@
     weapon_alyxgun
     {
         
-        "printname" "#HL2_AlyxGun"
+        "printname"             "#Refraction_AlyxGun"
         "viewmodel"             "models/weapons/W_Alyx_Gun.mdl"
         "playermodel"           "models/weapons/W_Alyx_Gun.mdl" //FIXME: 
         "anim_prefix"           "alyxgun"
@@ -126,7 +126,7 @@
     weapon_annabelle
     {
         
-        "printname"         "#HL2_Annabelle"
+        "printname"         "#Refraction_Annabelle"
         "viewmodel"         "models/weapons/v_shotgun.mdl"
         "playermodel"       "models/weapons/w_annabelle.mdl"
         "anim_prefix"       "shotgun"
@@ -192,7 +192,7 @@
     
     weapon_ar2
     {
-        "printname"             "#HL2_Pulse_Rifle"
+        "printname"             "#Refraction_Pulse_Rifle"
         "viewmodel"             "models/weapons/v_irifle.mdl"
         "playermodel"           "models/weapons/w_irifle.mdl"
         "anim_prefix"           "ar2"
@@ -273,7 +273,7 @@
     
     weapon_bugbait
     {
-        "printname"             "#HL2_Bugbait"
+        "printname"             "#Refraction_Bugbait"
         "viewmodel"             "models/weapons/v_bugbait.mdl"
         "playermodel"           "models/weapons/w_bugbait.mdl"
         "anim_prefix"           "Grenade"
@@ -329,7 +329,7 @@
     
     weapon_citizenpackage
     {
-        "printname"             "#HL2_SMG1"
+        "printname"             "#Refraction_SMG1"
         "viewmodel"             "models/weapons/w_package.mdl"
         "playermodel"           "models/weapons/w_package.mdl"
         "anim_prefix"           "smg2"
@@ -390,7 +390,7 @@
     
     weapon_citizensuitcase
     {
-        "printname"             "#HL2_SMG1"
+        "printname"             "#Refraction_SMG1"
         "viewmodel"             "models/weapons/w_suitcase_passenger.mdl"
         "playermodel"           "models/weapons/w_suitcase_passenger.mdl"
         "anim_prefix"           "smg2"
@@ -458,7 +458,7 @@
     
     weapon_crossbow
     {
-        "printname"             "#HL2_Crossbow"
+        "printname"             "#Refraction_Crossbow"
         "viewmodel"             "models/weapons/v_crossbow.mdl"
         "playermodel"           "models/weapons/w_crossbow.mdl"
         "anim_prefix"           "bow"
@@ -536,7 +536,7 @@
     
     weapon_crowbar
     {
-        "printname"             "#HL2_Crowbar"
+        "printname"             "#Refraction_Crowbar"
         "viewmodel"             "models/weapons/v_crowbar.mdl"
         "playermodel"           "models/weapons/w_crowbar.mdl"
         "anim_prefix"           "crowbar"
@@ -594,7 +594,7 @@
     
     weapon_cubemap
     {
-        "printname"         "#HL2_Cubemap"
+        "printname"         "#Refraction_Cubemap"
         "viewmodel"         "models/shadertest/envballs.mdl"
         "playermodel"       "models/shadertest/envballs.mdl"
         "anim_prefix"       "envballs"
@@ -653,7 +653,7 @@
     
     weapon_frag
     {
-        "printname"             "#HL2_Grenade"
+        "printname"             "#Refraction_Grenade"
         "viewmodel"             "models/weapons/v_grenade.mdl"
         "playermodel"           "models/items/grenadeAmmo.mdl"
         "anim_prefix"           "Grenade"
@@ -720,7 +720,7 @@
     
     weapon_physcannon
     {
-        "printname"         "#HL2_GravityGun"
+        "printname"         "#Refraction_GravityGun"
         "viewmodel"         "models/weapons/v_physcannon.mdl"
         "playermodel"       "models/weapons/w_Physics.mdl"
         "anim_prefix"       "gauss"
@@ -779,9 +779,10 @@
         }
     }
     
+    // What the fuck is that? Does it even work?!
     weapon_physgun
     {
-        "printname"             "#HL2_Physgun"
+        "printname"             "#Refraction_Physgun"
         "viewmodel"             "models/weapons/v_Physics.mdl"
         "playermodel"           "models/weapons/w_Physics.mdl"
         "anim_prefix"           "physgun"
@@ -842,7 +843,7 @@
 
     weapon_pistol
     {
-        "printname"             "#HL2_Pistol"
+        "printname"             "#Refraction_Pistol"
         "viewmodel"             "models/weapons/v_pistol.mdl"
         "playermodel"           "models/weapons/w_pistol.mdl"
         "anim_prefix"           "pistol"
@@ -911,7 +912,7 @@
     
     weapon_rpg
     {
-        "printname"             "#HL2_RPG"
+        "printname"             "#Refraction_RPG"
         "viewmodel"             "models/weapons/v_rpg.mdl"
         "playermodel"           "models/weapons/w_rocket_launcher.mdl"
         "anim_prefix"           "missile launcher"
@@ -982,7 +983,7 @@
     
     weapon_shotgun  // weapon_shitgun
     {
-        "printname"             "#HL2_Shotgun"
+        "printname"             "#Refraction_Shotgun"
         "viewmodel"             "models/weapons/v_shotgun.mdl"
         "playermodel"           "models/weapons/w_shotgun.mdl"
         "anim_prefix"           "shotgun"
@@ -1050,7 +1051,7 @@
     
     weapon_smg1
     {
-        "printname"             "#HL2_SMG1"
+        "printname"             "#Refraction_SMG1"
         "viewmodel"             "models/weapons/v_smg1.mdl"
         "playermodel"           "models/weapons/w_smg1.mdl"
         "anim_prefix"           "smg2"
@@ -1128,7 +1129,7 @@
     
     weapon_stunstick
     {
-        "printname"             "#HL2_StunBaton"
+        "printname"             "#Refraction_StunBaton"
         "viewmodel"             "models/weapons/v_stunbaton.mdl"
         "playermodel"           "models/weapons/w_stunbaton.mdl"
         "anim_prefix"           "stunbaton"

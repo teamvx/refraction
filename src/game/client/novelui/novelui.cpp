@@ -43,6 +43,8 @@ bool CNovelUI::Init( void )
     m_pGameUI = (IGameUI *)factory( GAMEUI_INTERFACE_VERSION, NULL );
     if( !m_pGameUI )
         return false;
+    
+    g_pVGuiLocalize->AddFile( "resource/novelui_%language%.txt", "GAME", true );
 
     m_pRootPanel = new CNovelUIRootPanel( enginevgui->GetPanel( PANEL_GAMEUIDLL ) );
     m_pGameUI->SetMainMenuOverride( m_pRootPanel->GetVPanel() );

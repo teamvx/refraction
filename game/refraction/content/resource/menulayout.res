@@ -3,14 +3,14 @@
 //-----------------------------------------------------------------------------
 "MenuLayout"
 {
-    "#GameUI_GameMenu_ResumeGame"
+    "#NovelUI_ResumeGame"
     {
         "command"   "ResumeGame"
         "in_game"   "1"
         "in_menu"   "0" 
     }
 
-    "#GameUI_GameMenu_Disconnect"
+    "#NovelUI_Disconnect"
     {
         "command"   "Disconnect"
         "in_game"   "1"
@@ -24,17 +24,17 @@
         "in_menu"   "0"
     }
     
-    "#GameUI_GameMenu_NewGame"
+    "#NovelUI_NewGame"
     {
         "command"   "OpenNewGameDialog"
     }
 
-    "#GameUI_GameMenu_LoadGame"
+    "#NovelUI_LoadGame"
     {
         "command"   "OpenLoadGameDialog"
     }
     
-    "#GameUI_GameMenu_SaveGame"
+    "#NovelUI_SaveGame"
     {
         "command"   "OpenSaveGameDialog"
     }
@@ -44,12 +44,12 @@
         "blank"     "1"
     }
     
-    "#GameUI_GameMenu_Options"
+    "#NovelUI_Options"
     {
         "command"   "OpenOptionsDialog"
     }
     
-    "#GameUI_GameMenu_Quit"
+    "#NovelUI_Quit"
     {
         "command"   "Quit"
     }
