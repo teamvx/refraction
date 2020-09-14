@@ -174,7 +174,7 @@ void CHudPrimaryAmmo::UpdatePlayerAmmo( C_BasePlayer *pPlayer )
 
 void CHudPrimaryAmmo::UpdateVehicleAmmo( C_BasePlayer *pPlayer, IClientVehicle *pVehicle )
 {
-    m_hVehicle = NULL;
+    m_hWeapon = NULL;
     C_BaseEntity *pVehicleEntity = pVehicle->GetVehicleEnt();
     if( !pVehicleEntity || pVehicle->GetPrimaryAmmoType() < 0 ) {
         SetPaintEnabled( false );
@@ -185,7 +185,7 @@ void CHudPrimaryAmmo::UpdateVehicleAmmo( C_BasePlayer *pPlayer, IClientVehicle *
     SetPaintEnabled( true );
     SetPaintBackgroundEnabled( true );
 
-    m_pAmmoIcon = m_hWeapon->GetWpnData().iconAmmo;
+    m_pAmmoIcon = gWR.GetAmmoIconFromWeapon( pVehicle->GetPrimaryAmmoType() );
 
     int iAmmo1 = pVehicle->GetPrimaryAmmoClip();
     int iAmmo2 = 0;
@@ -197,6 +197,7 @@ void CHudPrimaryAmmo::UpdateVehicleAmmo( C_BasePlayer *pPlayer, IClientVehicle *
     SetAmmo( iAmmo1 );
     SetAmmo2( iAmmo2 );
     if( pVehicleEntity != m_hVehicle ) {
+        SetShouldDisplaySecondaryValue( false );
         g_pClientMode->GetViewportAnimationController()->StartAnimationSequence( "WeaponChanged" );
         m_hVehicle = pVehicleEntity;
     }

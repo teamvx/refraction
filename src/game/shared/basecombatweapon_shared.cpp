@@ -292,7 +292,7 @@ void CBaseCombatWeapon::Precache( void )
 //-----------------------------------------------------------------------------
 const WeaponInfo_t &CBaseCombatWeapon::GetWpnData( void ) const
 {
-    return *( WeaponParse::GetWeaponInfo( m_hWeaponFileInfo ) );
+    return *WeaponParse::GetWeaponInfo( m_hWeaponFileInfo );
 }
 
 //-----------------------------------------------------------------------------
