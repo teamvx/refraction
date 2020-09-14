@@ -300,7 +300,7 @@
         "xpos"                  "r252"
         "ypos"                  "40"
         "wide"                  "248"
-        "tall"                  "320"
+        "tall"                  "265"
         "history_gap"           "56"
         "icon_inset"            "38"
         "text_inset"            "36"
