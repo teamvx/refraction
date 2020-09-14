@@ -1,10 +1,10 @@
 "GameInfo"
 {
-    game            "Refraction"
-    gameui2_title   "REFRACTION"
+    game            "Refraction 0.2.2"
+    novel_title     "REFRACTION"
     type            "singleplayer_only"
     developer       "undbsd"
-    developer_url   "https://github.com/undbsd/refraction-mod"
+    developer_url   "https://github.com/refractionmod"
 
     FileSystem
     {

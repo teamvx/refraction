@@ -23,12 +23,12 @@ Scheme
     // controls use these to determine their settings
     BaseSettings
     {
-        "GameLogo.X"                    "48"
-        "GameLogo.Y"                    "168"
-        "GameLogo.Width"                "592"
-        "GameLogo.Height"               "64"
-        "GameLogo.Font"                 "GameTitle"
-        "GameLogo.Color"                "LogoText"
+        "GameTitle.X"                   "48"
+        "GameTitle.Y"                   "168"
+        "GameTitle.Width"               "592"
+        "GameTitle.Height"              "64"
+        "GameTitle.Font"                "GameTitle"
+        "GameTitle.Color"               "LogoText"
         
         "GameMenu.X"                    "53"
         "GameMenu.Y"                    "240"
@@ -65,7 +65,7 @@ Scheme
         {
             "1"
             {
-                "name"      "Verdana"
+                "name"      "Source Sans Pro"
                 "tall"      "15"
                 "weight"    "500"
                 "antialias" "1"
@@ -91,7 +91,8 @@ Scheme
     // specifies all the custom (non-system) font files that need to be loaded to service the above described fonts
     CustomFontFiles
     {
-        "1"     "resource/K12HL2.ttf"       //Logo
-        "2"     "resource/HALFLIFE2.ttf"
+        "1" "resource/K12HL2.ttf"
+        "2" "resource/HALFLIFE2.ttf"
+        "3" "resource/sourcesanspro.ttf"
     }
 }

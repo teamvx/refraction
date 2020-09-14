@@ -43,7 +43,7 @@ $Project "game_client"
             $File "$GAMECLIENT\novelui\rootpanel.cpp"
             $File "$GAMECLIENT\novelui\rootpanel.h"
 
-            $File "$GAMECLIENT\novelui\gamelogo.cpp"
+            $File "$GAMECLIENT\novelui\gametitle.cpp"
             $File "$GAMECLIENT\novelui\gamemenu.cpp"
         }
 

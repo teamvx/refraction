@@ -3,9 +3,9 @@
 #ifdef _WIN32
 #pragma once
 #endif
-#include "novelui/rootpanel.h"
 #include "GameUI/IGameUI.h"
 #include "igamesystem.h"
+#include "vgui_controls/Panel.h"
 
 class INovelUI : public CBaseGameSystem {
 public:

@@ -1,5 +1,6 @@
 #include "cbase.h"
 #include "novelui.h"
+#include "engine/IEngineSound.h"
 #include "tier0/icommandline.h"
 #include "tier1/KeyValues.h"
 #include "vgui/ISurface.h"
@@ -66,6 +67,9 @@ void CGameMenuButton::Initialize()
     if( pszResourceString && pszResourceString[0] ) {
         Q_strncpy( m_szClickSound, pszResourceString, 256 );
     }
+
+    enginesound->PrecacheSound( m_szRolloverSound, true, true );
+    enginesound->PrecacheSound( m_szClickSound, true, true );
 }
 
 void CGameMenuButton::Paint()

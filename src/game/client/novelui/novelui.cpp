@@ -1,8 +1,8 @@
 #include "cbase.h"
-#include "novelui.h"
-#include "igamesystem.h"
 #include "ienginevgui.h"
 #include "vgui/ILocalize.h"
+#include "novelui.h"
+#include "rootpanel.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -46,6 +46,7 @@ bool CNovelUI::Init( void )
 
     m_pRootPanel = new CNovelUIRootPanel( enginevgui->GetPanel( PANEL_GAMEUIDLL ) );
     m_pGameUI->SetMainMenuOverride( m_pRootPanel->GetVPanel() );
+
     return true;
 }
 
