@@ -778,68 +778,6 @@
             }
         }
     }
-    
-    // What the fuck is that? Does it even work?!
-    weapon_physgun
-    {
-        "printname"             "#Refraction_Physgun"
-        "viewmodel"             "models/weapons/v_Physics.mdl"
-        "playermodel"           "models/weapons/w_Physics.mdl"
-        "anim_prefix"           "physgun"
-        "bucket"                "4"
-        "bucket_position"       "4"
-
-        "clip_size"             "1"
-        "clip2_size"            "8"
-        "primary_ammo"          "None"
-        "secondary_ammo"        "Gravity"
-        "default_clip2"         "8"
-
-        "weight"                "0"
-        "item_flags"            "2"
-
-        SoundData
-        {
-            "primary"           "Weapon_Physgun.On"
-            "reload"            "Weapon_Physgun.Off"
-            "special1"          "Weapon_Physgun.Special1"
-        }
-
-        TextureData
-        {
-            "weapon"
-            {
-                "font"      "WeaponIcons"
-                "character" "m"
-            }
-            "weapon_s"
-            {   
-                "font"      "WeaponIconsSelected"
-                "character" "m"
-            }
-            "crosshair"
-            {
-                "font"      "Crosshairs"
-                "character" "Q"
-            }
-            "autoaim"
-            {
-                "file"      "sprites/crosshairs"
-                "x"         "48"
-                "y"         "72"
-                "width"     "24"
-                "height"    "24"
-            }
-            "autoaim"
-            {
-                "file"      "sprites/crosshairs"
-                "x"         "48"
-                "y"         "72"
-                "width"     "24"
-                "height"    "24"
-            }
-        }
-    }
 
     weapon_pistol
     {
