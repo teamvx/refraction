@@ -10,6 +10,7 @@
 class INovelUI : public CBaseGameSystem {
 public:
     virtual void GetLocalizedString( const char *pszSource, wchar_t *szDestination, int iDestChars ) = 0;
+    virtual vgui::VPANEL GetRoot( void ) = 0;
     virtual IGameUI * GameUI( void ) = 0;
 };
 extern INovelUI *g_pNovelUI;

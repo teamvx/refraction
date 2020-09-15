@@ -17,6 +17,7 @@ public:
 
 public:
     void GetLocalizedString( const char *pszSource, wchar_t *szDestination, int iDestChars );
+    vgui::VPANEL GetRoot( void );
     IGameUI * GameUI( void );
 
 private:
@@ -98,6 +99,13 @@ void CNovelUI::GetLocalizedString( const char *pszSource, wchar_t *szDestination
         return;
     }
     g_pVGuiLocalize->ConvertANSIToUnicode( pszSource, szDestination, iDestChars );
+}
+
+vgui::VPANEL CNovelUI::GetRoot( void )
+{
+    if( !m_pRootPanel )
+        return enginevgui->GetPanel( PANEL_GAMEUIDLL );
+    return m_pRootPanel->GetVPanel();
 }
 
 IGameUI * CNovelUI::GameUI( void )
