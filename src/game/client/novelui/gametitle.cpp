@@ -21,13 +21,6 @@ private:
 };
 REGISTER_UI_ELEMENT( CGameTitle );
 
-CON_COMMAND( ui_reloadlogo, "" )
-{
-    if( s_CGameTitle_reg.m_pElement ) {
-        s_CGameTitle_reg.m_pElement->Initialize();
-    }
-}
-
 CGameTitle::CGameTitle() : BaseClass( "GameTitle" )
 {
     // ????

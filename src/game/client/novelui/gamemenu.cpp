@@ -146,13 +146,6 @@ private:
 };
 REGISTER_UI_ELEMENT( CGameMenu );
 
-CON_COMMAND( ui_reloadmenu, "" )
-{
-    if( s_CGameMenu_reg.m_pElement ) {
-        s_CGameMenu_reg.m_pElement->Initialize();
-    }
-}
-
 CGameMenu::CGameMenu() : BaseClass( "Menu" ), m_vecButtons()
 {
     // We are invisible -- just a canvas for buttons.
