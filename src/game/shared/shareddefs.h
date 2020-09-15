@@ -14,7 +14,7 @@
 #define MOD_NAME            "Refraction"
 #define MOD_VERSION_MAJOR   0
 #define MOD_VERSION_MINOR   2
-#define MOD_VERSION_PATCH   2
+#define MOD_VERSION_PATCH   3
 
 #define TICK_INTERVAL           (gpGlobals->interval_per_tick)
 
