@@ -96,7 +96,7 @@ void CGameMenuButton::PaintBackground()
         Color bg = GetBgColor();
         g_pVGuiSurface->GetScreenSize( wide, tall );
         g_pVGuiSurface->DrawSetColor( bg );
-        g_pVGuiSurface->DrawFilledRectFastFade( 0, 0, wide, tall, 0, wide, bg.a(), 0, true );
+        g_pVGuiSurface->DrawFilledRectFade( 0, 0, wide, tall, bg.a(), 0, true );
     }
 }
 
