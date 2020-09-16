@@ -31,10 +31,14 @@
 extern IFileSystem *filesystem;
 
 #ifndef CLIENT_DLL
-    #include "env_player_surface_trigger.h"
-    static ConVar dispcoll_drawplane( "dispcoll_drawplane", "0" );
+#include "env_player_surface_trigger.h"
+static ConVar dispcoll_drawplane( "dispcoll_drawplane", "0" );
 #endif
 
+// client side autojumping
+#if defined(CLIENT_DLL)
+static ConVar cl_autojump( "cl_autojump", "0", FCVAR_ARCHIVE, "Responsible for whether auto jump is enabled or not." );
+#endif
 
 // tickcount currently isn't set during prediction, although gpGlobals->curtime and
 // gpGlobals->frametime are. We should probably set tickcount (to player->m_nTickBase),
@@ -2408,8 +2412,11 @@ bool CGameMovement::CheckJumpButton( void )
         return false;
 #endif
 
-    if ( mv->m_nOldButtons & IN_JUMP )
-        return false;       // don't pogo stick
+    // client autojumping.
+#if defined(CLIENT_DLL)
+    if( !cl_autojump.GetBool() && ( mv->m_nOldButtons & IN_JUMP ) )
+        return false;   // don't pogo stick.
+#endif
 
     // Cannot jump will in the unduck transition.
     if ( player->m_Local.m_bDucking && (  player->GetFlags() & FL_DUCKING ) )
