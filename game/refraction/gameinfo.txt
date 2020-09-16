@@ -1,6 +1,6 @@
 "GameInfo"
 {
-    game            "Refraction 0.2.2"
+    game            "Refraction 0.2.3"
     novel_title     "REFRACTION"
     type            "singleplayer_only"
     developer       "undbsd"
