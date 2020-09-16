@@ -2476,39 +2476,28 @@ bool CGameMovement::CheckJumpButton( void )
     }
 
     // ABH
-    if( sv_abh.GetBool() ) {
-        // Add a little forward velocity based on your current forward velocity - if you are not sprinting.
-        CHLMoveData *pMoveData = (CHLMoveData*)mv;
-        Vector vecForward;
-        AngleVectors( mv->m_vecViewAngles, &vecForward );
-        vecForward.z = 0;
-        VectorNormalize( vecForward );
+    CHLMoveData *pMoveData = (CHLMoveData *)mv;
+    Vector vecForward;
+    AngleVectors( mv->m_vecViewAngles, &vecForward );
+    vecForward.z = 0.0;
+    VectorNormalize( vecForward );
 
-        // We give a certain percentage of the current forward movement as a bonus to the jump speed.  That bonus is clipped
-        // to not accumulate over time.
-        float flSpeedBoostPerc = ( !pMoveData->m_bIsSprinting && !player->m_Local.m_bDucked) ? 0.5f : 0.1f;
-        float flSpeedAddition = fabs( mv->m_flForwardMove * flSpeedBoostPerc );
-        float flMaxSpeed = mv->m_flMaxSpeed + (mv->m_flMaxSpeed * flSpeedBoostPerc);
-        float flNewSpeed = (flSpeedAddition + mv->m_vecVelocity.Length2D());
+    // We give a certain percentage of the current forward movement as a bonus to the jump speed.
+    // That bonus is clipped to not accumulate over time.
+    float flSpeedBoostPerc = ( !pMoveData->m_bIsSprinting && !player->m_Local.m_bDucked ) ? 0.5f : 0.1f;
+    float flSpeedAddition = fabs( mv->m_flForwardMove * flSpeedBoostPerc );
+    float flMaxSpeed = mv->m_flMaxSpeed + ( mv->m_flMaxSpeed * flSpeedBoostPerc );
+    float flNewSpeed = ( flSpeedAddition + mv->m_vecVelocity.Length2D() );
 
-        // If we're over the maximum, we want to only boost as much as will get us to the goal speed
-        if( flNewSpeed > flMaxSpeed ) {
-            flSpeedAddition -= flNewSpeed - flMaxSpeed;
-        }
+    // If we're over the maximum, we want to only boost as much as will get us to the goal speed
+    if( flNewSpeed > flMaxSpeed )
+        flSpeedAddition -= flNewSpeed - flMaxSpeed;
+    if( mv->m_flForwardMove < 0.0 )
+        flSpeedAddition *= -1.0;
+    VectorAdd( ( vecForward * flSpeedAddition ), mv->m_vecVelocity, mv->m_vecVelocity );
 
-        if( mv->m_flForwardMove < 0.0 ) {
-            flSpeedAddition *= -1.0;
-        }
-
-        // Add it on
-        VectorAdd( (vecForward * flSpeedAddition), mv->m_vecVelocity, mv->m_vecVelocity );
-    }
-    else {
-        CHLMoveData *pMoveData = (CHLMoveData*)mv;
-        float flSpeedBoostPerc = ( !pMoveData->m_bIsSprinting && !player->m_Local.m_bDucked ) ? 0.5f : 0.1f;
-        float flMaxSpeed = mv->m_flMaxSpeed + ( mv->m_flMaxSpeed * flSpeedBoostPerc );
-
-        // Cap velocity...
+    // if this is disabled, cap the speed...
+    if( !sv_abh.GetBool() ) {
         Vector velocity = mv->m_vecVelocity;
         float zspeed = velocity.z;
         velocity.z = 0;
