@@ -99,7 +99,7 @@ Scheme
         Label.DisabledFgColor1                          "117 117 117 255"
         Label.DisabledFgColor2                          "30 30 30 255"
 
-        ListPanel.TextColor                             "Black"
+        ListPanel.TextColor                             "White"
         ListPanel.TextBgColor                           "Blank"
         ListPanel.BgColor                               "TransparentBlack"
         ListPanel.SelectedTextColor                     "Black"
