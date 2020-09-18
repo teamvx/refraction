@@ -5,7 +5,7 @@ actor "!Target1"
   {
     event speak "overhere01"
     {
-      time 0.586667 1.359865
+      time 0.586667 1.359864
       param "npc_citizen.overhere01"
       param2 "75dB"
       fixedlength
@@ -31,16 +31,24 @@ actor "!Target1"
   }
   channel "animation"
   {
-    event sequence "wave"
+    event gesture "g_wave"
     {
-      time 0.006666 4.006666
-      param "Wave"
-      event_ramp
+      time 0.000000 2.486667
+      param "g_wave"
+      absolutetags playback_time
       {
-        0.2273 0.9936
-        3.4455 0.8644
+        "in" 0.352941
+        "loop" 0.779412
+        "end" 0.794118
+        "out" 0.808824
       }
-      fixedlength
+      absolutetags shifted_time
+      {
+        "in" 0.352941
+        "loop" 0.779412
+        "end" 0.794118
+        "out" 0.808824
+      }
     }
   }
   channel "face player"

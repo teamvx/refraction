@@ -29,7 +29,6 @@
             game                                    |all_source_engine_paths|ep2/ep2_pak.vpk
             game                                    |all_source_engine_paths|ep2/ep2_sound_vo_english.vpk
             game                                    |all_source_engine_paths|episodic/ep1_pak.vpk
-            game                                    |all_source_engine_paths|episodic/ep1_sound_vo_english.vpk
             
             // Misc
             platform                                |all_source_engine_paths|platform/platform_misc.vpk
