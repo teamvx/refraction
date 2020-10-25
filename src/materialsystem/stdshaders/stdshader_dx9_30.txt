@@ -9,6 +9,4 @@
 
 screenspaceeffect_vs30.fxc
 post_chromatic_aberration_ps30.fxc
-post_cubic_distortion_ps30.fxc
-pbr_ps30.fxc
-pbr_vs30.fxc                                      
+post_cubic_distortion_ps30.fxc                              

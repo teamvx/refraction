@@ -1,26 +1,22 @@
 #include "common_ps_fxc.h"
 
-sampler2D   FBTEXTURE   : register(s0);
-float       AMOUNT      : register(c0);
+sampler2D   FBTEXTURE   : register(S0);
+float       AMOUNT      : register(C0);
 
-struct PS_INPUT {
-    float2  uv0         : TEXCOORD0;
-};
-
-float2 barrelDistortion(float2 uv, float amt) {
+float2 barrelDistortion(float2 uv, float amt)
+{
     float2 cc = (uv - 0.5);
     float dist = dot(cc, cc) * 0.015;
     return (uv + cc * dist * amt);
 }
 
-float4 main(PS_INPUT input) : COLOR
+float4 main(float2 uv : TEXCOORD0) : COLOR
 {
-    const float2 uv0 = input.uv0;
     float4 color;
     for(float i = 0.0; i < 1.0; i += 0.1) {
-        float4 pure = tex2D(FBTEXTURE, barrelDistortion(uv0, i));
-        float4 abb1 = tex2D(FBTEXTURE, barrelDistortion(uv0, i + AMOUNT));
-        float4 abb2 = tex2D(FBTEXTURE, barrelDistortion(uv0, i - AMOUNT));
+        float4 pure = tex2D(FBTEXTURE, barrelDistortion(uv, i));
+        float4 abb1 = tex2D(FBTEXTURE, barrelDistortion(uv, i + AMOUNT));
+        float4 abb2 = tex2D(FBTEXTURE, barrelDistortion(uv, i - AMOUNT));
         color += float4(abb1.r, pure.g, abb2.b, pure.a);
     }
     color /= 10.0;

@@ -15,14 +15,10 @@ BEGIN_SHADER( post_cubic_distortion, "Adds lens effect..." )
 
     SHADER_INIT
     {
-        if( params[FBTEXTURE]->IsDefined() ) {
+        if( params[FBTEXTURE]->IsDefined() )
             LoadTexture( FBTEXTURE );
-        }
-
-        if( !params[DISTAMOUNT]->IsDefined() ) {
+        if( !params[DISTAMOUNT]->IsDefined() )
             params[DISTAMOUNT]->SetFloatValue( 0.15 );
-        }
-
     }
 
     bool NeedsFullFrameBufferTexture( IMaterialVar **params, bool bCheckSpecificToThisFrame /* = true */ ) const

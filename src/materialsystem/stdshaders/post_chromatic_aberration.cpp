@@ -15,14 +15,10 @@ BEGIN_SHADER( post_chromatic_aberration, "Adds a little color displacement at th
 
     SHADER_INIT
     {
-        if( params[FBTEXTURE]->IsDefined() ) {
+        if( params[FBTEXTURE]->IsDefined() )
             LoadTexture( FBTEXTURE );
-        }
-
-        if( !params[AMOUNT]->IsDefined() ) {
+        if( !params[AMOUNT]->IsDefined() )
             params[AMOUNT]->SetFloatValue( 0.4 );
-        }
-
     }
 
     bool NeedsFullFrameBufferTexture( IMaterialVar **params, bool bCheckSpecificToThisFrame /* = true */ ) const

@@ -1,16 +1,11 @@
 #include "common_ps_fxc.h"
 
-sampler2D   FBTEXTURE   : register(s0);
-float       DISTAMOUNT  : register(c0);
+sampler2D   FBTEXTURE   : register(S0);
+float       DISTAMOUNT  : register(C0);
 
-struct PS_INPUT {
-    float2  uv0         : TEXCOORD0;
-};
-
-float4 main(PS_INPUT input) : COLOR
+float4 main(float2 uv : TEXCOORD0) : COLOR
 {
-    float2 uv0 = input.uv0;
-    float r2 = pow((uv0.x - 0.5), 2) + pow((uv0.y - 0.5), 2);
+    float r2 = pow((uv.x - 0.5), 2) + pow((uv.y - 0.5), 2);
     float f = 1.0 + r2 * (-0.15 + DISTAMOUNT * sqrt(r2));
-    return tex2D(FBTEXTURE, float2((f * (uv0.x - 0.5) + 0.5), (f * (uv0.y - 0.5) + 0.5)));
+    return tex2D(FBTEXTURE, float2((f * (uv.x - 0.5) + 0.5), (f * (uv.y - 0.5) + 0.5)));
 }
