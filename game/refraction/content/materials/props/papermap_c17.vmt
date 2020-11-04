@@ -1,7 +1,5 @@
 "LightmappedGeneric"
 {
-	// Original shader: BaseTimesLightmap
-	// 
-	"$basetexture" "Props/papermap_c17"
-	"$surfaceprop" "paper"
+    $basetexture "props/papermap_c17"
+    $surfaceprop "paper"
 }

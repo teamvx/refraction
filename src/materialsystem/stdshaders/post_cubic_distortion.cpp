@@ -9,16 +9,13 @@
 
 BEGIN_SHADER( post_cubic_distortion, "Adds lens effect..." )
     BEGIN_SHADER_PARAMS
-        SHADER_PARAM( FBTEXTURE, SHADER_PARAM_TYPE_TEXTURE, "_rt_FullFrameFB", "Framebuffer texture." )
-        SHADER_PARAM( DISTAMOUNT, SHADER_PARAM_TYPE_FLOAT, "0.15", "Amount of displacement." )
+        SHADER_PARAM( AMOUNT, SHADER_PARAM_TYPE_FLOAT, "0.15", "Amount of displacement." )
     END_SHADER_PARAMS
 
     SHADER_INIT
     {
-        if( params[FBTEXTURE]->IsDefined() )
-            LoadTexture( FBTEXTURE );
-        if( !params[DISTAMOUNT]->IsDefined() )
-            params[DISTAMOUNT]->SetFloatValue( 0.15 );
+        if( !params[AMOUNT]->IsDefined() )
+            params[AMOUNT]->SetFloatValue( 0.15 );
     }
 
     bool NeedsFullFrameBufferTexture( IMaterialVar **params, bool bCheckSpecificToThisFrame /* = true */ ) const
@@ -58,11 +55,9 @@ BEGIN_SHADER( post_cubic_distortion, "Adds lens effect..." )
 
         DYNAMIC_STATE
         {
-            // $FBTEXTURE
-            BindTexture( SHADER_SAMPLER0, FBTEXTURE, -1 );
+            pShaderAPI->BindStandardTexture( SHADER_SAMPLER0, TEXTURE_FRAME_BUFFER_FULL_TEXTURE_0 );
 
-            // $AMOUNT
-            float c0 = params[DISTAMOUNT]->GetFloatValue();
+            float c0 = params[AMOUNT]->GetFloatValue();
             pShaderAPI->SetPixelShaderConstant( 0, &c0, 1 );
 
             DECLARE_DYNAMIC_VERTEX_SHADER( screenspaceeffect_vs30 );

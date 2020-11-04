@@ -26,7 +26,7 @@ $Project "game_shader_dx9"
 
     $Folder "Header Files"
     {
-        $File "pbr_common_ps30.h"
+
     }
 
     $File   "build_refraction_shaders.bat"

@@ -1,6 +1,4 @@
-"post_chromatic_aberration"
+post_chromatic_aberration
 {
-	"$fbtexture"	"_rt_FullFrameFB"
-	"$amount"	"0.2"
-	// anyway unity shader system is better.
+    $amount 0.2
 }

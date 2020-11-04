@@ -1,6 +1,6 @@
 #include "common_ps_fxc.h"
 
-sampler2D   FBTEXTURE   : register(S0);
+sampler2D   FRAMEBUFFER : register(S0);
 float       AMOUNT      : register(C0);
 
 float2 barrelDistortion(float2 uv, float amt)
@@ -14,9 +14,9 @@ float4 main(float2 uv : TEXCOORD0) : COLOR
 {
     float4 color;
     for(float i = 0.0; i < 1.0; i += 0.1) {
-        float4 pure = tex2D(FBTEXTURE, barrelDistortion(uv, i));
-        float4 abb1 = tex2D(FBTEXTURE, barrelDistortion(uv, i + AMOUNT));
-        float4 abb2 = tex2D(FBTEXTURE, barrelDistortion(uv, i - AMOUNT));
+        float4 pure = tex2D(FRAMEBUFFER, barrelDistortion(uv, i));
+        float4 abb1 = tex2D(FRAMEBUFFER, barrelDistortion(uv, i + AMOUNT));
+        float4 abb2 = tex2D(FRAMEBUFFER, barrelDistortion(uv, i - AMOUNT));
         color += float4(abb1.r, pure.g, abb2.b, pure.a);
     }
     color /= 10.0;

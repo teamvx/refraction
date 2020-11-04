@@ -1,5 +1,4 @@
-"post_cubic_distortion"
+post_cubic_distortion
 {
-	"$fbtexture"	"_rt_FullFrameFB"
-	"$distamount"	"0.15"
+    $amount 0.15
 }
