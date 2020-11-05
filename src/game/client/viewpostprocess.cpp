@@ -99,7 +99,7 @@ PP_Pass_t PP_Final[] = {
     PPP_PROCESS_IF_CVAR( "shaders/post_cubic_distortion", &mat_post_cubic_distortion ),
 };
 
-void DrawPostEffects( PP_Pass_t *pl, int count, int x, int y, int w, int h ) _NOEXCEPT
+void DrawPostEffects( PP_Pass_t *pl, int count, int x, int y, int w, int h )
 {
     // When saving, engine captures a screenshot with smaller size
     // which results in extreme post processing effects.
