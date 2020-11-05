@@ -37,7 +37,7 @@ static CDiscordRPC s_DiscordRPC;
 IDiscordRPC *g_pDiscordRPC = &s_DiscordRPC;
 
 // Discord AppID
-static ConVar discord_appid( "discord_appid", "733023520220774563", FCVAR_DEVELOPMENTONLY );
+static ConVar discord_appid( "discord_appid", "773971191350296606", FCVAR_DEVELOPMENTONLY );
 
 static inline void Discord_UpdatePresenceEx( const DiscordRichPresence *pPrecense )
 {
