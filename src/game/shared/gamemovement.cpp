@@ -2410,7 +2410,7 @@ bool CGameMovement::CheckJumpButton( void )
     if( mv->m_nOldButtons & IN_JUMP )
         return false;   // don't pogo stick.
 
-    // Cannot jump will in the unduck transition.
+    // Cannot jump while in the unduck transition.
     if ( player->m_Local.m_bDucking && (  player->GetFlags() & FL_DUCKING ) )
         return false;
 
