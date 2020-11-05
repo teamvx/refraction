@@ -101,7 +101,12 @@ PP_Pass_t PP_Final[] = {
 
 void DrawPostEffects( PP_Pass_t *pl, int count, int x, int y, int w, int h ) _NOEXCEPT
 {
-    // Loop through the pl
+    // When saving, engine captures a screenshot with smaller size
+    // which results in extreme post processing effects.
+    if( engine->IsSaveInProgress() )
+        return;
+
+    // Loop though the pass.
     for( int i = 0; i < count; i++ ) {
         bool cond = true; // PPC_ALWAYS
         switch( pl[i].cond ) {
