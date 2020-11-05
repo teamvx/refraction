@@ -35,9 +35,6 @@ extern IFileSystem *filesystem;
 static ConVar dispcoll_drawplane( "dispcoll_drawplane", "0" );
 #endif
 
-// client side autojumping
-static ConVar cl_autojump( "cl_autojump", "0", FCVAR_CLIENTDLL | FCVAR_ARCHIVE, "Responsible for whether auto jump is enabled or not." );
-
 // tickcount currently isn't set during prediction, although gpGlobals->curtime and
 // gpGlobals->frametime are. We should probably set tickcount (to player->m_nTickBase),
 // but we're REALLY close to shipping, so we can change that later and people can use
@@ -54,7 +51,7 @@ ConVar player_limit_jump_speed( "player_limit_jump_speed", "1", FCVAR_REPLICATED
 
 // Accelerated back hopping (un-)fix
 // If enabled, standard backjumping behaviour will be enabled.
-// If disabled, player will save his speed by bunnyjumping (its hard but possible) but will be disallowed to boost
+// If disabled, player will save their speed by bunnyjumping (its hard but possible) but will be disallowed to boost
 ConVar sv_abh( "sv_abh", "0", FCVAR_ARCHIVE | FCVAR_REPLICATED, "Accelerated back hopping (1 - on, 0 - off)" );
 
 // option_duck_method is a carrier convar. Its sole purpose is to serve an easy-to-flip
@@ -2410,8 +2407,7 @@ bool CGameMovement::CheckJumpButton( void )
         return false;
 #endif
     
-    // client autojumping.
-    if( !cl_autojump.GetBool() && ( mv->m_nOldButtons & IN_JUMP ) )
+    if( mv->m_nOldButtons & IN_JUMP )
         return false;   // don't pogo stick.
 
     // Cannot jump will in the unduck transition.
