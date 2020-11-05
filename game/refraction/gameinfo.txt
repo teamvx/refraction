@@ -1,10 +1,10 @@
 "GameInfo"
 {
-    game            "Refraction 0.2.3"
+    game            "Refraction 0.2"
     novel_title     "REFRACTION"
     type            "singleplayer_only"
-    developer       "undbsd"
-    developer_url   "https://github.com/refractionmod"
+    developer       "TeamVX"
+    developer_url   "https://github.com/teamvx"
 
     FileSystem
     {
@@ -15,7 +15,7 @@
             game+mod+mod_write+default_write_path   |gameinfo_path|.
             gamebin                                 |gameinfo_path|bin
             game+mod                                |gameinfo_path|content/.
-//          game+mod                                |gameinfo_path|re_content.vpk
+            //game+mod                                |gameinfo_path|re_content.vpk
 
             // HL2
             game                                    |all_source_engine_paths|hl2/hl2_english.vpk
@@ -33,7 +33,7 @@
             // Misc
             platform                                |all_source_engine_paths|platform/platform_misc.vpk
             
-            // Mount stuff from there
+            // Mount stuff here
             game                                    |all_source_engine_paths|hl2
             game                                    |all_source_engine_paths|ep2
             game                                    |all_source_engine_paths|episodic
