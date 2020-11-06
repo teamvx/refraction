@@ -7,18 +7,18 @@
 #include "post_generic_vs30.inc"
 #include "post_chromatic_aberration_ps30.inc"
 
-BEGIN_SHADER( post_chromatic_aberration, "Adds a little color displacement at the screen borders" )
+BEGIN_SHADER( Post_ChromaticAberration, "Adds a little color displacement at the screen borders" )
     BEGIN_SHADER_PARAMS
-        SHADER_PARAM( AMOUNT, SHADER_PARAM_TYPE_FLOAT, "0.2", "Amount of aberration." )
+        SHADER_PARAM( AMOUNT, SHADER_PARAM_TYPE_FLOAT, "0.1", "Amount of aberration." )
     END_SHADER_PARAMS
 
     SHADER_INIT
     {
         if( !params[AMOUNT]->IsDefined() )
-            params[AMOUNT]->SetFloatValue( 0.4 );
+            params[AMOUNT]->SetFloatValue( 0.1 );
     }
 
-    bool NeedsFullFrameBufferTexture( IMaterialVar **params, bool bCheckSpecificToThisFrame /* = true */ ) const
+    bool NeedsFullFrameBufferTexture( IMaterialVar **params, bool bCheckSpecificToThisFrame ) const
     {
         return true;
     }
@@ -40,10 +40,8 @@ BEGIN_SHADER( post_chromatic_aberration, "Adds a little color displacement at th
             pShaderShadow->EnableDepthWrites( false );
             pShaderShadow->EnableTexture( SHADER_SAMPLER0, true );
 
-            int fmt = VERTEX_POSITION;
-            pShaderShadow->VertexShaderVertexFormat( fmt, 1, 0, 0 );
+            pShaderShadow->VertexShaderVertexFormat( VERTEX_POSITION, 1, 0, 0 );
 
-            // Pre-cache shaders
             DECLARE_STATIC_VERTEX_SHADER( post_generic_vs30 );
             SET_STATIC_VERTEX_SHADER( post_generic_vs30 );
 

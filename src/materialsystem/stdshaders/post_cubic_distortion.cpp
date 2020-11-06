@@ -7,7 +7,7 @@
 #include "post_generic_vs30.inc"
 #include "post_cubic_distortion_ps30.inc"
 
-BEGIN_SHADER( post_cubic_distortion, "Adds lens effect..." )
+BEGIN_SHADER( Post_CubicDistortion, "Adds lens effect..." )
     BEGIN_SHADER_PARAMS
         SHADER_PARAM( AMOUNT, SHADER_PARAM_TYPE_FLOAT, "0.15", "Amount of displacement." )
     END_SHADER_PARAMS
@@ -18,7 +18,7 @@ BEGIN_SHADER( post_cubic_distortion, "Adds lens effect..." )
             params[AMOUNT]->SetFloatValue( 0.15 );
     }
 
-    bool NeedsFullFrameBufferTexture( IMaterialVar **params, bool bCheckSpecificToThisFrame /* = true */ ) const
+    bool NeedsFullFrameBufferTexture( IMaterialVar **params, bool bCheckSpecificToThisFrame ) const
     {
         return true;
     }
@@ -40,10 +40,8 @@ BEGIN_SHADER( post_cubic_distortion, "Adds lens effect..." )
             pShaderShadow->EnableDepthWrites( false );
             pShaderShadow->EnableTexture( SHADER_SAMPLER0, true );
 
-            int fmt = VERTEX_POSITION;
-            pShaderShadow->VertexShaderVertexFormat( fmt, 1, 0, 0 );
+            pShaderShadow->VertexShaderVertexFormat( VERTEX_POSITION, 1, 0, 0 );
 
-            // Pre-cache shaders
             DECLARE_STATIC_VERTEX_SHADER( post_generic_vs30 );
             SET_STATIC_VERTEX_SHADER( post_generic_vs30 );
 

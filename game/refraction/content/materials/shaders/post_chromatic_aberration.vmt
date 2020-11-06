@@ -1,4 +1,4 @@
-post_chromatic_aberration
+Post_ChromaticAberration
 {
-    $amount 0.2
+    $amount 0.1
 }

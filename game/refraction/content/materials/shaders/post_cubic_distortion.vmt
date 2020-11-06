@@ -1,4 +1,4 @@
-post_cubic_distortion
+Post_CubicDistortion
 {
     $amount 0.15
 }
