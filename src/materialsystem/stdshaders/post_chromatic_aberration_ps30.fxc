@@ -6,8 +6,7 @@ float       AMOUNT      : register(C0);
 float2 barrelDistortion(float2 uv, float amt)
 {
     float2 cc = (uv - 0.5);
-    float dist = dot(cc, cc) * 0.015;
-    return (uv + cc * dist * amt);
+    return (uv + cc * (dot(cc, cc) * 0.015) * amt);
 }
 
 float4 main(float2 uv : TEXCOORD0) : COLOR

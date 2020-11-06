@@ -7,6 +7,6 @@
 //	    _vs30.vcs
 //
 
-screenspaceeffect_vs30.fxc
+post_generic_vs30.fxc
 post_chromatic_aberration_ps30.fxc
 post_cubic_distortion_ps30.fxc                              

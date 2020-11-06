@@ -12,8 +12,8 @@ $Configuration  "Debug"
 {
     $General
     {
-        $OutputDirectory        "Debug_dx9_$GAMENAME"           [$WIN32]
-        $IntermediateDirectory  "Debug_dx9_$GAMENAME"           [$WIN32]
+        $OutputDirectory        "Debug_dx9_$GAMENAME"                   [$WIN32]
+        $IntermediateDirectory  "Debug_dx9_$GAMENAME"                   [$WIN32]
     }
 }
 
@@ -21,8 +21,8 @@ $Configuration  "Release"
 {
     $General
     {
-        $OutputDirectory        "Release_dx9_$GAMENAME"     [$WIN32]
-        $IntermediateDirectory  "Release_dx9_$GAMENAME"     [$WIN32]
+        $OutputDirectory        "Release_dx9_$GAMENAME"                 [$WIN32]
+        $IntermediateDirectory  "Release_dx9_$GAMENAME"                 [$WIN32]
     }
 }
 
@@ -31,15 +31,15 @@ $Configuration
 {
     $Compiler
     {
-        $AdditionalIncludeDirectories   "$BASE;include"         [$WIN32||$POSIX]
+        $AdditionalIncludeDirectories   "$BASE;include"                 [$WIN32||$POSIX]
         $PreprocessorDefinitions        "$BASE;STDSHADER_DX9_DLL_EXPORT;FAST_MATERIALVAR_ACCESS;GAME_SHADER_DLL"
-        $PreprocessorDefinitions        "$BASE;USE_ACTUAL_DX"   [($WIN32||$X360) && !$GL]
+        $PreprocessorDefinitions        "$BASE;USE_ACTUAL_DX"           [($WIN32||$X360) && !$GL]
     }
 
     $Linker
     {
         $AdditionalDependencies         "$BASE version.lib winmm.lib"   [$WIN32]
-        $SystemLibraries                "iconv" [$OSXALL]
+        $SystemLibraries                "iconv"                         [$OSXALL]
     }
 }
 
@@ -47,34 +47,28 @@ $Project
 {
     $Folder "Source Files"
     {
-        $File   "BaseVSShader.cpp"
-        $File   "screenspace_general.cpp"
+        $File "BaseVSShader.cpp"
     }
 
     $Folder "Header Files"
     {
-        $File   "BaseVSShader.h"
-        $File   "common_fxc.h"
-        $File   "common_hlsl_cpp_consts.h"
-        $File   "common_ps_fxc.h"
-        $File   "common_vertexlitgeneric_dx9.h"
-        $File   "common_vs_fxc.h"
-        $File   "shader_constant_register_map.h"
-    }
-
-    $Folder "Link Libraries" [$WIN32]
-    {
-//      $File   "$SRCDIR\dx9sdk\lib\d3dx9.lib"
+        $File "BaseVSShader.h"
+        $File "common_fxc.h"
+        $File "common_hlsl_cpp_consts.h"
+        $File "common_ps_fxc.h"
+        $File "common_vertexlitgeneric_dx9.h"
+        $File "common_vs_fxc.h"
+        $File "shader_constant_register_map.h"
     }
 
     $Folder "Link Libraries"
     {
-        $Lib    mathlib
-        $Lib    shaderlib
+        $Lib mathlib
+        $Lib shaderlib
     }
 
-    $File   "build_shaders.bat"
+    $File "build_shaders.bat"
 
-    $Shaders    "stdshader_dx9_20b.txt"
-    $Shaders    "stdshader_dx9_30.txt"
+    $Shaders "stdshader_dx9_20b.txt"
+    $Shaders "stdshader_dx9_30.txt"
 }

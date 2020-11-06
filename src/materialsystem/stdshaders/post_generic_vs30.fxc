@@ -1,0 +1,19 @@
+#include "common_vs_fxc.h"
+
+struct VS_Input {
+    float3 position : POSITION;
+    float2 uv       : TEXCOORD0;
+};
+
+struct VS_Output {
+    float4 position : POSITION;
+    float2 uv       : TEXCOORD0;
+};
+
+VS_Output main(VS_Input vsi)
+{
+    VS_Output vso;
+    vso.position = float4(vsi.position, 1.0);
+    vso.uv = vsi.uv;
+    return vso;
+}

@@ -4,7 +4,7 @@
 // This file defines the C++ component of the chromatic aberration post processing shader.
 // ----------------------------------------------------------------------------
 #include "BaseVSShader.h"
-#include "screenspaceeffect_vs30.inc"
+#include "post_generic_vs30.inc"
 #include "post_chromatic_aberration_ps30.inc"
 
 BEGIN_SHADER( post_chromatic_aberration, "Adds a little color displacement at the screen borders" )
@@ -44,8 +44,8 @@ BEGIN_SHADER( post_chromatic_aberration, "Adds a little color displacement at th
             pShaderShadow->VertexShaderVertexFormat( fmt, 1, 0, 0 );
 
             // Pre-cache shaders
-            DECLARE_STATIC_VERTEX_SHADER( screenspaceeffect_vs30 );
-            SET_STATIC_VERTEX_SHADER( screenspaceeffect_vs30 );
+            DECLARE_STATIC_VERTEX_SHADER( post_generic_vs30 );
+            SET_STATIC_VERTEX_SHADER( post_generic_vs30 );
 
             if( g_pHardwareConfig->SupportsShaderModel_3_0() ) {
                 DECLARE_STATIC_PIXEL_SHADER( post_chromatic_aberration_ps30 );
@@ -60,8 +60,8 @@ BEGIN_SHADER( post_chromatic_aberration, "Adds a little color displacement at th
             float c0 = params[AMOUNT]->GetFloatValue();
             pShaderAPI->SetPixelShaderConstant( 0, &c0, 1 );
 
-            DECLARE_DYNAMIC_VERTEX_SHADER( screenspaceeffect_vs30 );
-            SET_DYNAMIC_VERTEX_SHADER( screenspaceeffect_vs30 );
+            DECLARE_DYNAMIC_VERTEX_SHADER( post_generic_vs30 );
+            SET_DYNAMIC_VERTEX_SHADER( post_generic_vs30 );
 
             if( g_pHardwareConfig->SupportsShaderModel_3_0() ) {
                 DECLARE_DYNAMIC_PIXEL_SHADER( post_chromatic_aberration_ps30 );

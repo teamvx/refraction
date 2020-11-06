@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
-//  game_shader_dx9.vpc
+//  game_shader_dx9_refraction.vpc
 //
-//  Project Script for mods to use an an example of how to override shaders
+//  Project Script
 //-----------------------------------------------------------------------------
 
 $Macro SRCDIR       "..\.."
@@ -19,7 +19,7 @@ $Project "game_shader_dx9"
 
     $Folder "Shader Source"
     {
-        $File "screenspaceeffect_vs30.fxc"
+        $File "post_generic_vs30.fxc"
         $File "post_chromatic_aberration_ps30.fxc"
         $File "post_cubic_distortion_ps30.fxc"
     }
