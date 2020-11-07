@@ -9,13 +9,13 @@
 
 BEGIN_SHADER( Post_CubicDistortion, "Adds lens effect..." )
     BEGIN_SHADER_PARAMS
-        SHADER_PARAM( AMOUNT, SHADER_PARAM_TYPE_FLOAT, "0.15", "Amount of displacement." )
+        SHADER_PARAM( AMOUNT, SHADER_PARAM_TYPE_FLOAT, "0.2", "Amount of displacement." )
     END_SHADER_PARAMS
 
     SHADER_INIT
     {
         if( !params[AMOUNT]->IsDefined() )
-            params[AMOUNT]->SetFloatValue( 0.15 );
+            params[AMOUNT]->SetFloatValue( 0.2 );
     }
 
     bool NeedsFullFrameBufferTexture( IMaterialVar **params, bool bCheckSpecificToThisFrame ) const

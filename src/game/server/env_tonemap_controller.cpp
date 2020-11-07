@@ -8,7 +8,6 @@
 #include "baseentity.h"
 #include "entityoutput.h"
 #include "convar.h"
-
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
@@ -21,8 +20,7 @@ ConVar mat_hdr_tonemapscale( "mat_hdr_tonemapscale", "1.0", FCVAR_CHEAT, "The HD
 //-----------------------------------------------------------------------------
 // Purpose: Entity that controls player's tonemap
 //-----------------------------------------------------------------------------
-class CEnvTonemapController : public CPointEntity
-{
+class CEnvTonemapController : public CPointEntity {
     DECLARE_CLASS( CEnvTonemapController, CPointEntity );
 public:
     DECLARE_DATADESC();
@@ -39,6 +37,9 @@ public:
     void    InputSetAutoExposureMin( inputdata_t &inputdata );
     void    InputSetAutoExposureMax( inputdata_t &inputdata );
     void    InputUseDefaultAutoExposure( inputdata_t &inputdata );
+    void    InputSetBloomScale( inputdata_t &inputdata );
+    void    InputUseDefaultBloomScale( inputdata_t &inputdata );
+    void    InputSetBloomScaleRange( inputdata_t &inputdata );
 
 private:
     float   m_flBlendTonemapStart;      // HDR Tonemap at the start of the blend
@@ -48,8 +49,11 @@ private:
 
     CNetworkVar( bool, m_bUseCustomAutoExposureMin );
     CNetworkVar( bool, m_bUseCustomAutoExposureMax );
+    CNetworkVar( bool, m_bUseCustomBloomScale );
     CNetworkVar( float, m_flCustomAutoExposureMin );
     CNetworkVar( float, m_flCustomAutoExposureMax );
+    CNetworkVar( float, m_flCustomBloomScale );
+    CNetworkVar( float, m_flCustomBloomScaleMinimum );
 };
 
 LINK_ENTITY_TO_CLASS( env_tonemap_controller, CEnvTonemapController );
@@ -63,7 +67,9 @@ BEGIN_DATADESC( CEnvTonemapController )
     DEFINE_FIELD( m_bUseCustomAutoExposureMax, FIELD_BOOLEAN ),
     DEFINE_FIELD( m_flCustomAutoExposureMin, FIELD_FLOAT ),
     DEFINE_FIELD( m_flCustomAutoExposureMax, FIELD_FLOAT ),
-
+    DEFINE_FIELD( m_flCustomBloomScale, FIELD_FLOAT ),
+    DEFINE_FIELD( m_flCustomBloomScaleMinimum, FIELD_FLOAT ),
+    DEFINE_FIELD( m_bUseCustomBloomScale, FIELD_BOOLEAN ),
     DEFINE_THINKFUNC( UpdateTonemapScaleBlend ),
 
     // Inputs
@@ -73,13 +79,19 @@ BEGIN_DATADESC( CEnvTonemapController )
     DEFINE_INPUTFUNC( FIELD_FLOAT, "SetAutoExposureMin", InputSetAutoExposureMin ),
     DEFINE_INPUTFUNC( FIELD_FLOAT, "SetAutoExposureMax", InputSetAutoExposureMax ),
     DEFINE_INPUTFUNC( FIELD_VOID, "UseDefaultAutoExposure", InputUseDefaultAutoExposure ),
+    DEFINE_INPUTFUNC( FIELD_VOID, "UseDefaultBloomScale", InputUseDefaultBloomScale ),
+    DEFINE_INPUTFUNC( FIELD_FLOAT, "SetBloomScale", InputSetBloomScale ),
+    DEFINE_INPUTFUNC( FIELD_FLOAT, "SetBloomScaleRange", InputSetBloomScaleRange ),
 END_DATADESC()
 
 IMPLEMENT_SERVERCLASS_ST( CEnvTonemapController, DT_EnvTonemapController )
-    SendPropInt( SENDINFO(m_bUseCustomAutoExposureMin), 1, SPROP_UNSIGNED ),
-    SendPropInt( SENDINFO(m_bUseCustomAutoExposureMax), 1, SPROP_UNSIGNED ),
-    SendPropFloat( SENDINFO(m_flCustomAutoExposureMin), 0, SPROP_NOSCALE),
-    SendPropFloat( SENDINFO(m_flCustomAutoExposureMax), 0, SPROP_NOSCALE),
+    SendPropInt( SENDINFO( m_bUseCustomAutoExposureMin ), 1, SPROP_UNSIGNED ),
+    SendPropInt( SENDINFO( m_bUseCustomAutoExposureMax ), 1, SPROP_UNSIGNED ),
+    SendPropInt( SENDINFO( m_bUseCustomBloomScale ), 1, SPROP_UNSIGNED ),
+    SendPropFloat( SENDINFO( m_flCustomAutoExposureMin ), 0, SPROP_NOSCALE ),
+    SendPropFloat( SENDINFO( m_flCustomAutoExposureMax ), 0, SPROP_NOSCALE ),
+    SendPropFloat( SENDINFO( m_flCustomBloomScale ), 0, SPROP_NOSCALE ),
+    SendPropFloat( SENDINFO( m_flCustomBloomScaleMinimum ), 0, SPROP_NOSCALE ),
 END_SEND_TABLE()
 
 //-----------------------------------------------------------------------------
@@ -114,22 +126,20 @@ void CEnvTonemapController::InputSetTonemapScale( inputdata_t &inputdata )
 void CEnvTonemapController::InputBlendTonemapScale( inputdata_t &inputdata )
 {
     char parseString[255];
-    Q_strncpy(parseString, inputdata.value.String(), sizeof(parseString));
+    Q_strncpy( parseString, inputdata.value.String(), sizeof( parseString ) );
 
     // Get the target tonemap scale
-    char *pszParam = strtok(parseString," ");
-    if ( !pszParam || !pszParam[0] )
-    {
-        Warning("%s (%s) received BlendTonemapScale input without a target tonemap scale. Syntax: <target tonemap scale> <blend time>\n", GetClassname(), GetDebugName() );
+    char *pszParam = strtok( parseString, " " );
+    if( !pszParam || !pszParam[0] ) {
+        Warning( "%s (%s) received BlendTonemapScale input without a target tonemap scale. Syntax: <target tonemap scale> <blend time>\n", GetClassname(), GetDebugName() );
         return;
     }
     m_flBlendTonemapEnd = atof( pszParam );
 
     // Get the blend time
-    pszParam = strtok(NULL," ");
-    if ( !pszParam || !pszParam[0] )
-    {
-        Warning("%s (%s) received BlendTonemapScale input without a blend time. Syntax: <target tonemap scale> <blend time>\n", GetClassname(), GetDebugName() );
+    pszParam = strtok( NULL, " " );
+    if( !pszParam || !pszParam[0] ) {
+        Warning( "%s (%s) received BlendTonemapScale input without a blend time. Syntax: <target tonemap scale> <blend time>\n", GetClassname(), GetDebugName() );
         return;
     }
     m_flBlendEndTime = gpGlobals->curtime + atof( pszParam );
@@ -143,14 +153,28 @@ void CEnvTonemapController::InputBlendTonemapScale( inputdata_t &inputdata )
 }
 
 //-----------------------------------------------------------------------------
+// Purpose: set a base and minimum bloom scale
+//-----------------------------------------------------------------------------
+void CEnvTonemapController::InputSetBloomScaleRange( inputdata_t &inputdata )
+{
+    float bloom_max = 1, bloom_min = 1;
+    int nargs = sscanf( "%f %f", inputdata.value.String(), bloom_max, bloom_min );
+    if( nargs != 2 ) {
+        Warning( "%s (%s) received SetBloomScaleRange input without 2 arguments. Syntax: <max bloom> <min bloom>\n", GetClassname(), GetDebugName() );
+        return;
+    }
+    m_flCustomBloomScale = bloom_max;
+    m_flCustomBloomScaleMinimum = bloom_min;
+}
+
+//-----------------------------------------------------------------------------
 // Purpose:
 //-----------------------------------------------------------------------------
 void CEnvTonemapController::InputSetTonemapRate( inputdata_t &inputdata )
 {
     // TODO: There should be a better way to do this.
     ConVarRef mat_hdr_manual_tonemap_rate( "mat_hdr_manual_tonemap_rate" );
-    if ( mat_hdr_manual_tonemap_rate.IsValid() )
-    {
+    if( mat_hdr_manual_tonemap_rate.IsValid() ) {
         float flTonemapRate = inputdata.value.Float();
         mat_hdr_manual_tonemap_rate.SetValue( flTonemapRate );
     }
@@ -167,7 +191,7 @@ void CEnvTonemapController::UpdateTonemapScaleBlend( void )
     //Msg("Setting tonemap scale to %f (curtime %f, %f -> %f)\n", flRemapped, gpGlobals->curtime, m_flBlendStartTime, m_flBlendEndTime );
 
     // Stop when we're out of the blend range
-    if ( gpGlobals->curtime >= m_flBlendEndTime )
+    if( gpGlobals->curtime >= m_flBlendEndTime )
         return;
 
     SetNextThink( gpGlobals->curtime + 0.1 );
@@ -198,4 +222,22 @@ void CEnvTonemapController::InputUseDefaultAutoExposure( inputdata_t &inputdata 
 {
     m_bUseCustomAutoExposureMin = false;
     m_bUseCustomAutoExposureMax = false;
+}
+
+//-----------------------------------------------------------------------------
+// Purpose:
+//-----------------------------------------------------------------------------
+void CEnvTonemapController::InputSetBloomScale( inputdata_t &inputdata )
+{
+    m_flCustomBloomScale = inputdata.value.Float();
+    m_flCustomBloomScaleMinimum = m_flCustomBloomScale;
+    m_bUseCustomBloomScale = true;
+}
+
+//-----------------------------------------------------------------------------
+// Purpose:
+//-----------------------------------------------------------------------------
+void CEnvTonemapController::InputUseDefaultBloomScale( inputdata_t &inputdata )
+{
+    m_bUseCustomBloomScale = false;
 }
