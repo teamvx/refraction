@@ -882,12 +882,7 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CreateInterfaceFn physi
     IGameSystem::Add( PerfVisualBenchmark() );
     IGameSystem::Add( MumbleSystem() );
     IGameSystem::Add( g_pDiscordRPC );
-    
-    // Add -nogameui to disable NovelUI...
-    if( !CommandLine()->FindParm( "-nogameui" ) )
-        IGameSystem::Add( g_pNovelUI );
-    else
-        ConColorMsg( LOG_COLOR_B_RED, "NovelUI: Disabled...\n" );
+    IGameSystem::Add( g_pNovelUI );
 
     modemanager->Init();
     g_pClientMode->InitViewport();
