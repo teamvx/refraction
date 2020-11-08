@@ -19,10 +19,11 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-#define SLAM_PRIMARY_VOLUME     450
+#if 0
+
+#define SLAM_PRIMARY_VOLUME 450
 
 BEGIN_DATADESC( CWeapon_SLAM )
-
     DEFINE_FIELD( m_tSlamState, FIELD_INTEGER ),
     DEFINE_FIELD( m_bDetonatorArmed, FIELD_BOOLEAN ),
     DEFINE_FIELD( m_bNeedDetonatorDraw, FIELD_BOOLEAN ),
@@ -37,7 +38,6 @@ BEGIN_DATADESC( CWeapon_SLAM )
     // Function Pointers
     DEFINE_FUNCTION( SLAMThink ),
     DEFINE_FUNCTION( SlamTouch ),
-
 END_DATADESC()
 
 
@@ -994,3 +994,5 @@ CWeapon_SLAM::CWeapon_SLAM(void)
     m_bNeedDetonatorDraw    = false;
     m_bNeedDetonatorHolster = false;
 }
+
+#endif

@@ -657,6 +657,7 @@ void CFlare::AddToActiveFlares( void )
     }
 }
 
+
 #if 0
 
 IMPLEMENT_SERVERCLASS_ST(CFlaregun, DT_Flaregun)

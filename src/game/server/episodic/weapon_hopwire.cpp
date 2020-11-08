@@ -27,6 +27,7 @@
 
 #define GRENADE_RADIUS  4.0f    // inches
 
+#if 0
 //-----------------------------------------------------------------------------
 // Fragmentation grenades
 //-----------------------------------------------------------------------------
@@ -506,3 +507,5 @@ void CWeaponHopwire::RollGrenade( CBasePlayer *pPlayer )
 
     m_bRedraw = true;
 }
+
+#endif

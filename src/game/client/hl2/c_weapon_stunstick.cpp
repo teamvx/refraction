@@ -7,7 +7,7 @@
 #include "c_basehlcombatweapon.h"
 #include "iviewrender_beams.h"
 #include "beam_shared.h"
-#include "c_weapon__stubs.h"
+#include "c_weapons.h"
 #include "materialsystem/imaterial.h"
 #include "clienteffectprecachesystem.h"
 #include "beamdraw.h"
@@ -179,7 +179,7 @@ void RecvProxy_StunActive( const CRecvProxyData *pData, void *pStruct, void *pOu
     *(bool *)pOut = state;
 }
 
-STUB_WEAPON_CLASS_IMPLEMENT( weapon_stunstick, C_WeaponStunStick );
+IMPLEMENT_CLIENTWEAPON( weapon_stunstick, C_WeaponStunStick );
 
 IMPLEMENT_CLIENTCLASS_DT( C_WeaponStunStick, DT_WeaponStunStick, CWeaponStunStick )
     RecvPropInt( RECVINFO(m_bActive), 0, RecvProxy_StunActive ),

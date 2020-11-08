@@ -5,7 +5,7 @@
 //=============================================================================//
 
 #include "cbase.h"
-#include "c_weapon__stubs.h"
+#include "c_weapons.h"
 #include "c_basehlcombatweapon.h"
 #include "fx.h"
 #include "particles_localspace.h"
@@ -41,7 +41,7 @@ private:
     CSmartPtr<CParticleAttractor>   m_pAttractor;
 };
 
-STUB_WEAPON_CLASS_IMPLEMENT( weapon_physcannon, C_WeaponPhysCannon );
+IMPLEMENT_CLIENTWEAPON( weapon_physcannon, C_WeaponPhysCannon );
 
 IMPLEMENT_CLIENTCLASS_DT( C_WeaponPhysCannon, DT_WeaponPhysCannon, CWeaponPhysCannon )
     RecvPropBool( RECVINFO( m_bIsCurrentlyUpgrading ) ),

@@ -183,10 +183,9 @@ void CreateConcussiveBlast( const Vector &origin, const Vector &surfaceNormal, C
     }
 }
 
-// Combine Guard weapon
-
 #if 0
 
+// Combine Guard weapon
 class CWeaponCGuard : public CBaseHLCombatWeapon
 {
     DECLARE_DATADESC();

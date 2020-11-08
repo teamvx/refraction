@@ -702,7 +702,7 @@ $Project
         $File "$SRCDIR\public\vphysics\stats.h"
 
         //
-        // Files that doesn't use precompiler header.
+        // Files that doesn't use precompiled header.
         // It can be any external source needed to be compiled in...
         //
         $File                                           \
