@@ -1,0 +1,4 @@
+PostProc_Desaturate
+{
+    $factor 0.45
+}

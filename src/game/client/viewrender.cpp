@@ -1797,8 +1797,6 @@ void CViewRender::RenderView( const CViewSetup &view, int nClearFlags, int whatT
                 bFlashlightIsOn = pLocal->IsEffectActive( EF_DIMLIGHT );
             }
 
-            // und: I should create DoHUDPostProcessing in viewpostprocess which will be
-            //      called when we do DoEnginePostProcessing(x, y, w, h, ., true)
             DoEnginePostProcessing( view.x, view.y, view.width, view.height, bFlashlightIsOn );
             pRenderContext.SafeRelease();
         }

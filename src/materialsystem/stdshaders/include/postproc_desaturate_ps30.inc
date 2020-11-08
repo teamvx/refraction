@@ -7,17 +7,17 @@
 // defined $LIGHTING_PREVIEW && defined $FASTPATH && $LIGHTING_PREVIEW && $FASTPATH
 // ($FLASHLIGHT || $FLASHLIGHTSHADOWS) && $LIGHTING_PREVIEW
 
-#ifndef POST_CHROMATIC_ABERRATION_PS30_H
-#define POST_CHROMATIC_ABERRATION_PS30_H
+#ifndef POSTPROC_DESATURATE_PS30_H
+#define POSTPROC_DESATURATE_PS30_H
 
 #include "shaderapi/ishaderapi.h"
 #include "shaderapi/ishadershadow.h"
 #include "materialsystem/imaterialvar.h"
 
-class post_chromatic_aberration_ps30_Static_Index
+class postproc_desaturate_ps30_Static_Index
 {
 public:
-	post_chromatic_aberration_ps30_Static_Index( IShaderShadow* pShaderShadow, IMaterialVar** params )
+	postproc_desaturate_ps30_Static_Index( IShaderShadow* pShaderShadow, IMaterialVar** params )
 	{
 	}
 
@@ -27,13 +27,13 @@ public:
 	}
 };
 
-#define shaderStaticTest_post_chromatic_aberration_ps30 1
+#define shaderStaticTest_postproc_desaturate_ps30 1
 
 
-class post_chromatic_aberration_ps30_Dynamic_Index
+class postproc_desaturate_ps30_Dynamic_Index
 {
 public:
-	post_chromatic_aberration_ps30_Dynamic_Index( IShaderDynamicAPI* pShaderAPI )
+	postproc_desaturate_ps30_Dynamic_Index( IShaderDynamicAPI* pShaderAPI )
 	{
 	}
 
@@ -43,7 +43,7 @@ public:
 	}
 };
 
-#define shaderDynamicTest_post_chromatic_aberration_ps30 1
+#define shaderDynamicTest_postproc_desaturate_ps30 1
 
 
-#endif	// POST_CHROMATIC_ABERRATION_PS30_H
+#endif	// POSTPROC_DESATURATE_PS30_H

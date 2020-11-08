@@ -13,15 +13,17 @@ $Project "game_shader_dx9"
 {
     $Folder "Source Files"
     {
-        $File "post_chromatic_aberration.cpp"
-        $File "post_cubic_distortion.cpp"
+        $File "postproc_chromaticaberration.cpp"
+        $File "postproc_cubicdistortion.cpp"
+        $File "postproc_desaturate.cpp"
     }
 
     $Folder "Shader Source"
     {
-        $File "post_generic_vs30.fxc"
-        $File "post_chromatic_aberration_ps30.fxc"
-        $File "post_cubic_distortion_ps30.fxc"
+        $File "postproc_vs30.fxc"
+        $File "postproc_chromaticaberration_ps30.fxc"
+        $File "postproc_cubicdistortion_ps30.fxc"
+        $File "postproc_desaturate_ps30.fxc"
     }
 
     $Folder "Header Files"

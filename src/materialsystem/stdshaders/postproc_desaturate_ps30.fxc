@@ -1,0 +1,11 @@
+#include "common_ps_fxc.h"
+
+sampler2D   FRAMEBUFFER : register(S0);
+float       FACTOR      : register(C0);
+
+float4 main(float2 uv : TEXCOORD0) : COLOR
+{
+    float4 color = tex2D(FRAMEBUFFER, uv);
+    float gs = dot(color.rgb, float3(0.2125, 0.7154, 0.0721));
+    return float4(lerp(color.rgb, float3(gs, gs, gs), gs * FACTOR), color.a);
+}

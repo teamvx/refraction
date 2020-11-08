@@ -30,13 +30,10 @@ enum PP_Condition {
 
 struct PP_Pass_t {
     PP_Condition m_cond;
-    const char *m_pszMaterialName;
+    const char *m_pszMaterial;
     const ConVar *m_pCVar;
     CMaterialReference m_hMaterial;
 };
-#define PPP_PROCESS( mat_name )                         { PPC_ALWAYS, (mat_name), NULL }
-#define PPP_PROCESS_IF_CVAR( mat_name, cvar_ptr )       { PPC_IF_CVAR, (mat_name), (cvar_ptr) }
-#define PPP_PROCESS_IF_NOT_CVAR( mat_name, cvar_ptr )   { PPC_IF_NOT_CVAR, (mat_name), (cvar_ptr) }
 
 // mapmaker controlled autoexposure
 bool g_bUseCustomAutoExposureMin = false;
@@ -90,8 +87,9 @@ static ConVar r_queued_post_processing              ( "r_queued_post_processing"
 extern ConVar localplayer_visionflags;
 
 // Refraction postproc cvars
-static ConVar mat_post_chromatic_aberration( "mat_post_chromatic_aberration", "1", FCVAR_ARCHIVE, "Chromatic aberration post-effect" );
-static ConVar mat_post_cubic_distortion( "mat_post_cubic_distortion", "1", FCVAR_ARCHIVE, "Cubic distortion post-effect" );
+static ConVar mat_postproc_chromaticaberration( "mat_postproc_chromaticaberration", "1", FCVAR_ARCHIVE, "Add slight color shift at the screen edges" );
+static ConVar mat_postproc_cubicdistortion( "mat_postproc_cubicdistortion", "1", FCVAR_ARCHIVE, "Add a lens effect to the screen" );
+static ConVar mat_postproc_desaturate( "mat_postproc_desaturate", "1", FCVAR_ARCHIVE, "Desaturate bright areas" );
 
 // Post processing materials precache
 CLIENTEFFECT_REGISTER_BEGIN( PrecachePostProcessingEffects )
@@ -106,17 +104,17 @@ CLIENTEFFECT_REGISTER_BEGIN( PrecachePostProcessingEffects )
     CLIENTEFFECT_MATERIAL( "dev/blurfilterx_nohdr" )
     CLIENTEFFECT_MATERIAL( "dev/blurfiltery_nohdr" )
 
-    // TODO: Precache your post-processing effects here.
-    CLIENTEFFECT_MATERIAL( "shaders/post_chromatic_aberration" )
-    CLIENTEFFECT_MATERIAL( "shaders/post_cubic_distortion" )
+    // TODO: Precache your postproc here.
+    CLIENTEFFECT_MATERIAL( "shaders/postproc_chromaticaberration" )
+    CLIENTEFFECT_MATERIAL( "shaders/postproc_cubicdistortion" )
+    CLIENTEFFECT_MATERIAL( "shaders/postproc_desaturate" )
 CLIENTEFFECT_REGISTER_END_CONDITIONAL( engine->GetDXSupportLevel() >= 90 )
 
-// TODO: Place your post-processing effects here.
-// To make them controllable by cvar, use PPP_PROCESS_IF[_NOT]_CVAR()
-// To make them permanently enabled, use PPP_PROCESS()
+// TODO: add your custom postproc here.
 PP_Pass_t PP_Final[] = {
-    PPP_PROCESS_IF_CVAR( "shaders/post_chromatic_aberration", &mat_post_chromatic_aberration ),
-    PPP_PROCESS_IF_CVAR( "shaders/post_cubic_distortion", &mat_post_cubic_distortion ),
+    { PPC_IF_CVAR, "shaders/postproc_desaturate", &mat_postproc_desaturate },
+    { PPC_IF_CVAR, "shaders/postproc_chromaticaberration", &mat_postproc_chromaticaberration },
+    { PPC_IF_CVAR, "shaders/postproc_cubicdistortion", &mat_postproc_cubicdistortion },
 };
 
 // To avoid glitchy effects on savegame screenshots.
@@ -137,7 +135,7 @@ void DrawPostEffects( PP_Pass_t *pl, int count, int x, int y, int w, int h )
         if( bDraw ) {
             IMaterial *pMaterial = pl[i].m_hMaterial;
             if( !pMaterial ) {
-                pMaterial = materials->FindMaterial( pl[i].m_pszMaterialName, TEXTURE_GROUP_CLIENT_EFFECTS, true );
+                pMaterial = materials->FindMaterial( pl[i].m_pszMaterial, TEXTURE_GROUP_CLIENT_EFFECTS, true );
                 pl[i].m_hMaterial.Init( pMaterial );
             }
 
@@ -914,7 +912,7 @@ void CEnginePostMaterialProxy::OnBind( C_BaseEntity *pEnt )
         m_pMaterialParam_BloomEnable->SetIntValue( s_PostBloomEnable );
 }
 
-IMaterial *CEnginePostMaterialProxy::GetMaterial()
+IMaterial * CEnginePostMaterialProxy::GetMaterial()
 {
     if( !m_pMaterialParam_ColCorrectEnable )
         return NULL;
