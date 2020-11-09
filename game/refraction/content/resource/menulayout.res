@@ -37,6 +37,8 @@
     "#NovelUI_SaveGame"
     {
         "command"   "OpenSaveGameDialog"
+        "in_game"   "1"
+        "in_menu"   "0"
     }
     
     "blank"
