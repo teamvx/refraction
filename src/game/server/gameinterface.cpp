@@ -545,7 +545,12 @@ bool CServerGameDLL::DLLInit( CreateInterfaceFn appSystemFactory, CreateInterfac
     // init the gamestatsupload connection
     gamestatsuploader->InitConnection();
 
+#if MOD_IS_DEV_BUILD
+    ConColorMsg( LOG_COLOR_YELLOW, "%s %u.%u.%u devbuild server dll (%s %s)\n", MOD_NAME, MOD_VERSION_MAJOR, MOD_VERSION_MINOR, MOD_VERSION_PATCH, __DATE__, __TIME__ );
+#else
     ConColorMsg( LOG_COLOR_YELLOW, "%s %u.%u.%u server dll (%s %s)\n", MOD_NAME, MOD_VERSION_MAJOR, MOD_VERSION_MINOR, MOD_VERSION_PATCH, __DATE__, __TIME__ );
+#endif
+
     return true;
 }
 

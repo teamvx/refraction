@@ -62,7 +62,11 @@ CFPSPanel::CFPSPanel( vgui::VPANEL parent ) : BaseClass( NULL, "CFPSPanel" ), m_
     ComputeSize();
     g_pVGui->AddTickSignal( GetVPanel(), 250 );
 
+#if MOD_IS_DEV_BUILD
+    Q_snprintf( m_szWatermark, sizeof( m_szWatermark ), "%s %u.%u.%u devbuild (%s %s)", MOD_NAME, MOD_VERSION_MAJOR, MOD_VERSION_MINOR, MOD_VERSION_PATCH, __DATE__, __TIME__ );
+#else
     Q_snprintf( m_szWatermark, sizeof( m_szWatermark ), "%s %u.%u.%u (%s %s)", MOD_NAME, MOD_VERSION_MAJOR, MOD_VERSION_MINOR, MOD_VERSION_PATCH, __DATE__, __TIME__ );
+#endif
 }
 
 //-----------------------------------------------------------------------------
@@ -165,7 +169,7 @@ void CFPSPanel::Paint()
     int iFontTall = g_pVGuiSurface->GetFontTall( m_hFont );
     
     // Draw mod/game watermark...
-    g_pMatSystemSurface->DrawColoredText( m_hFont, 2, ypos, 255, 255, 255, 255, "%s %u.%u.%u (%s %s)", MOD_NAME, MOD_VERSION_MAJOR, MOD_VERSION_MINOR, MOD_VERSION_PATCH, __DATE__, __TIME__ );
+    g_pMatSystemSurface->DrawColoredText( m_hFont, 2, ypos, 255, 255, 255, 255, "%s", m_szWatermark );
     ypos += 2 + iFontTall;
 
     // Draw FPS
